@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-11-20T01:31:27.765Z</updated>
+  <updated>2018-11-21T02:04:58.971Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>搭建hexo遇到的问题</title>
+    <link href="http://yoursite.com/2018/11/21/%E6%90%AD%E5%BB%BAhexo%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98/"/>
+    <id>http://yoursite.com/2018/11/21/搭建hexo遇到的问题/</id>
+    <published>2018-11-21T01:19:18.000Z</published>
+    <updated>2018-11-21T02:04:58.971Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="如何引用自己的文章"><a href="#如何引用自己的文章" class="headerlink" title="如何引用自己的文章"></a>如何引用自己的文章</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#123;% post_link 文章文件名（不要后缀） 文章标题（可选） %&#125;</span><br><span class="line">例：&#123;% post_link  关于ShSx-G的由来 ShSx.G %&#125;</span><br></pre></td></tr></table></figure><h1 id="发布的图片太大（1M的图片在githubpage中卡的不能看）"><a href="#发布的图片太大（1M的图片在githubpage中卡的不能看）" class="headerlink" title="发布的图片太大（1M的图片在githubpage中卡的不能看）"></a>发布的图片太大（1M的图片在githubpage中卡的不能看）</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">我的解决方案是将图片压缩，我的用的一个在线压缩图片的网址是：https://tinypng.com/</span><br><span class="line">亲测1M的可以压到200k，图片清晰度还可以</span><br></pre></td></tr></table></figure><h1 id="nginx作为hexo的服务器访问503"><a href="#nginx作为hexo的服务器访问503" class="headerlink" title="nginx作为hexo的服务器访问503"></a>nginx作为hexo的服务器访问503</h1><p>因为没有文件的访问权限<br>测试nginx配置文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[root@iz2ze88p52tbioqel09nmrz ~]# nginx -t</span><br><span class="line">nginx: the configuration file /etc/nginx/nginx.conf syntax is ok</span><br><span class="line">nginx: configuration file /etc/nginx/nginx.conf test is successful</span><br></pre></td></tr></table></figure></p><p>打开nginx.conf ,修改user nginx  为user root，然后重新载入配置文件<br>命令：nginx -s reload<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"># For more information on configuration, see:</span><br><span class="line">#   * Official English Documentation: http://nginx.org/en/docs/</span><br><span class="line">#   * Official Russian Documentation: http://nginx.org/ru/docs/</span><br><span class="line"></span><br><span class="line">user root;</span><br><span class="line">worker_processes auto;</span><br><span class="line">error_log /var/log/nginx/error.log;</span><br><span class="line">pid /run/nginx.pid;</span><br></pre></td></tr></table></figure></p><p>nginx其他常用命令<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">nginx                      # 启动 Nginx</span><br><span class="line">nginx -s reload            # 重新载入配置文件</span><br><span class="line">nginx -s reopen            # 重启 Nginx</span><br><span class="line">nginx -s stop              # 停止 Nginx</span><br></pre></td></tr></table></figure></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;如何引用自己的文章&quot;&gt;&lt;a href=&quot;#如何引用自己的文章&quot; class=&quot;headerlink&quot; title=&quot;如何引用自己的文章&quot;&gt;&lt;/a&gt;如何引用自己的文章&lt;/h1&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr&gt;&lt;t
+      
+    
+    </summary>
+    
+      <category term="hexo" scheme="http://yoursite.com/categories/hexo/"/>
+    
+    
+      <category term="hexo" scheme="http://yoursite.com/tags/hexo/"/>
+    
+  </entry>
   
   <entry>
     <title>关于ShSx.G的由来</title>
@@ -47,16 +72,16 @@
     <link href="http://yoursite.com/2018/11/18/about/"/>
     <id>http://yoursite.com/2018/11/18/about/</id>
     <published>2018-11-18T04:28:05.000Z</published>
-    <updated>2018-11-18T14:41:50.598Z</updated>
+    <updated>2018-11-21T01:17:38.425Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="个人简介"><a href="#个人简介" class="headerlink" title="个人简介"></a>个人简介</h1><hr><p>我是高博文，英文名是ShSx.G （主要是看大家都有），javaer，现在居住在北京，未来想去杭州发展，目前处于后端写半天，样式调一天的状态(^_^)！<br>如果用一个词形容自己的话，我觉得是：善良。</p><h1 id="教育背景"><a href="#教育背景" class="headerlink" title="教育背景"></a>教育背景</h1><hr><table><thead><tr><th>毕业院校</th><th>专业</th><th>时间</th><th>学历</th></tr></thead><tbody><tr><td>兰州理工大学</td><td>软件工程</td><td>2013-9至2017-6</td><td>本科</td></tr></tbody></table><h1 id="工作经历"><a href="#工作经历" class="headerlink" title="工作经历"></a>工作经历</h1><hr><table><thead><tr><th>工作单位</th><th>职位</th><th>时间</th></tr></thead><tbody><tr><td>用友</td><td>软件开发实习生</td><td>2016-12至2017-5</td></tr><tr><td>用友</td><td>软件开发工程师</td><td>2017-6至今</td></tr></tbody></table><h1 id="我会什么"><a href="#我会什么" class="headerlink" title="我会什么"></a>我会什么</h1><hr><ul><li>前端：可以使用react写些简单的组件，对前端模块化，nodejs，npm，webpack，babel有一定的了解</li><li>后端：能够快速的使用spring+springmvc+mybatis（hibernate）搭建一个简单的web后端系统</li><li>运维：了解或使用过相关工具，jekins，docker，git，nignx，linux，maven</li><li>中间件：工作中使用的有redis，dubbo，自己也有了解过mq，memcache等</li></ul><h1 id="我做过什么"><a href="#我做过什么" class="headerlink" title="我做过什么"></a>我做过什么</h1><hr><ol><li>目前维护公司的ToB的审批流平台，与审批流相关的业务还算了解</li><li>工作中做过eclipse插件，以帮助公司的其他项目快速开发</li><li>使用java写了一个类似于有道词典的划屏取词的工具</li><li>使用Hexo+nignx+git搭建个人博客</li></ol><h1 id="我的希望"><a href="#我的希望" class="headerlink" title="我的希望"></a>我的希望</h1><hr><p>目前想在杭州找一份java开发的相关工作，如果有合适的岗位，可以给我发一份邮件，或者打电话聊聊，非常感谢(^_^)！<br>我的邮箱：<a href="mailto:1183782035@qq.com" target="_blank" rel="noopener">1183782035@qq.com</a><br>我的电话：13401002587</p>]]></content>
+    <content type="html"><![CDATA[<h1 id="个人简介"><a href="#个人简介" class="headerlink" title="个人简介"></a>个人简介</h1><hr><p>我是高博文，英文名是 <a href="/2018/11/19/关于ShSx-G的由来/" title="ShSx.G">ShSx.G</a> （主要是看大家都有），javaer，现在居住在北京，未来想去杭州发展，目前处于后端写半天，样式调一天的状态(^_^)！<br>如果用一个词形容自己的话，我觉得是：善良。</p><h1 id="教育背景"><a href="#教育背景" class="headerlink" title="教育背景"></a>教育背景</h1><hr><table><thead><tr><th>毕业院校</th><th>专业</th><th>时间</th><th>学历</th></tr></thead><tbody><tr><td>兰州理工大学</td><td>软件工程</td><td>2013-9至2017-6</td><td>本科</td></tr></tbody></table><h1 id="工作经历"><a href="#工作经历" class="headerlink" title="工作经历"></a>工作经历</h1><hr><table><thead><tr><th>工作单位</th><th>职位</th><th>时间</th></tr></thead><tbody><tr><td>用友</td><td>软件开发实习生</td><td>2016-12至2017-5</td></tr><tr><td>用友</td><td>软件开发工程师</td><td>2017-6至今</td></tr></tbody></table><h1 id="我会什么"><a href="#我会什么" class="headerlink" title="我会什么"></a>我会什么</h1><hr><ul><li>前端：可以使用react写些简单的组件，对前端模块化，nodejs，npm，webpack，babel有一定的了解</li><li>后端：能够快速的使用spring+springmvc+mybatis（hibernate）搭建一个简单的web后端系统</li><li>运维：了解或使用过相关工具，jekins，docker，git，nignx，linux，maven</li><li>中间件：工作中使用的有redis，dubbo，自己也有了解过mq，memcache等</li></ul><h1 id="我做过什么"><a href="#我做过什么" class="headerlink" title="我做过什么"></a>我做过什么</h1><hr><ol><li>目前维护公司的ToB的审批流平台，与审批流相关的业务还算了解</li><li>工作中做过eclipse插件，以帮助公司的其他项目快速开发</li><li>使用java写了一个类似于有道词典的划屏取词的工具</li><li>使用Hexo+nignx+git搭建个人博客</li></ol><h1 id="我的希望"><a href="#我的希望" class="headerlink" title="我的希望"></a>我的希望</h1><hr><p>目前想在杭州找一份java开发的相关工作，如果有合适的岗位，可以给我发一份邮件，或者打电话聊聊，非常感谢(^_^)！<br>我的邮箱：<a href="mailto:1183782035@qq.com" target="_blank" rel="noopener">1183782035@qq.com</a><br>我的电话：13401002587</p>]]></content>
     
     <summary type="html">
     
       
       
         &lt;h1 id=&quot;个人简介&quot;&gt;&lt;a href=&quot;#个人简介&quot; class=&quot;headerlink&quot; title=&quot;个人简介&quot;&gt;&lt;/a&gt;个人简介&lt;/h1&gt;&lt;hr&gt;
-&lt;p&gt;我是高博文，英文名是ShSx.G （主要是看大家都有），javaer，现在居住在北京，未来想去杭州发展，目前处于后
+&lt;p&gt;我是高博文，英文名是 &lt;a href=&quot;/2018/11/19/关于ShSx-G的由来/&quot; title=&quot;ShSx
       
     
     </summary>
@@ -69,49 +94,28 @@
   </entry>
   
   <entry>
-    <title>这是我第一个认真写的blog</title>
-    <link href="http://yoursite.com/2018/11/12/%E8%BF%99%E6%98%AF%E6%88%91%E7%AC%AC%E4%B8%80%E4%B8%AA%E8%AE%A4%E7%9C%9F%E5%86%99%E7%9A%84blog/"/>
-    <id>http://yoursite.com/2018/11/12/这是我第一个认真写的blog/</id>
+    <title>linux之ln的用法</title>
+    <link href="http://yoursite.com/2018/11/12/linux%E4%B9%8Bln%E7%9A%84%E7%94%A8%E6%B3%95/"/>
+    <id>http://yoursite.com/2018/11/12/linux之ln的用法/</id>
     <published>2018-11-12T13:07:00.000Z</published>
-    <updated>2018-11-17T14:52:28.211Z</updated>
+    <updated>2018-11-20T16:07:28.197Z</updated>
     
-    <content type="html"><![CDATA[<p>这个世界是一个不错的世界<br>建立软连接，变为全局</p><p>   ①ln -s /app/software/nodejs/bin/npm /usr/local/bin/ </p><p>   ②ln -s /app/software/nodejs/bin/node /usr/local/bin/</p><p>   /usr/local/nodejs/lib/node_modules/hexo-cli/bin/hexo</p>]]></content>
+    <content type="html"><![CDATA[<p>1、软链接就是：ln –s 源文件 目标文件，<br>只会在选定的位置上生成一个文件的镜像，不会占用磁盘空间，类似与windows的快捷方式。</p><p>2、硬链接ln源文件目标文件，没有参数-s，<br>会在选定的位置上生成一个和源文件大小相同的文件，无论是软链接还是硬链接，文件都保持同步变化。</p><p>例：</p><pre><code>①ln -s /usr/software/nodejs/bin/npm /usr/local/bin/ ②ln -s /usr/software/nodejs/bin/node /usr/local/bin/</code></pre>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;p&gt;这个世界是一个不错的世界&lt;br&gt;建立软连接，变为全局&lt;/p&gt;
-&lt;p&gt;   ①ln -s /app/software/nodejs/bin/npm /usr/local/bin/ &lt;/p&gt;
-&lt;p&gt;   ②ln -s /app/software/nodejs/bin/node 
+        &lt;p&gt;1、软链接就是：ln –s 源文件 目标文件，&lt;br&gt;只会在选定的位置上生成一个文件的镜像，不会占用磁盘空间，类似与windows的快捷方式。&lt;/p&gt;
+&lt;p&gt;2、硬链接ln源文件目标文件，没有参数-s，&lt;br&gt;会在选定的位置上生成一个和源文件大小相同的文件，无论是软链接还是
       
     
     </summary>
     
-      <category term="ff" scheme="http://yoursite.com/categories/ff/"/>
+      <category term="linux" scheme="http://yoursite.com/categories/linux/"/>
     
     
-      <category term="发生" scheme="http://yoursite.com/tags/%E5%8F%91%E7%94%9F/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>:year-:month-:day-:hello1</title>
-    <link href="http://yoursite.com/2018/11/09/year-month-day-hello1/"/>
-    <id>http://yoursite.com/2018/11/09/year-month-day-hello1/</id>
-    <published>2018-11-09T02:58:07.000Z</published>
-    <updated>2018-11-17T14:52:38.446Z</updated>
-    
-    <summary type="html">
-    
-    </summary>
-    
-      <category term="Diary" scheme="http://yoursite.com/categories/Diary/"/>
-    
-      <category term="hello" scheme="http://yoursite.com/categories/Diary/hello/"/>
-    
-      <category term="jj" scheme="http://yoursite.com/categories/Diary/hello/jj/"/>
-    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
     
   </entry>
   
@@ -120,7 +124,7 @@
     <link href="http://yoursite.com/2018/11/08/hello-world/"/>
     <id>http://yoursite.com/2018/11/08/hello-world/</id>
     <published>2018-11-08T11:05:57.914Z</published>
-    <updated>2018-11-12T11:36:13.174Z</updated>
+    <updated>2018-11-20T16:08:39.598Z</updated>
     
     <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>]]></content>
     
@@ -133,9 +137,7 @@
     
     </summary>
     
-      <category term="Diary" scheme="http://yoursite.com/categories/Diary/"/>
-    
-      <category term="hello" scheme="http://yoursite.com/categories/Diary/hello/"/>
+      <category term="hello" scheme="http://yoursite.com/categories/hello/"/>
     
     
   </entry>
@@ -145,7 +147,7 @@
     <link href="http://yoursite.com/2017/11/09/hello/"/>
     <id>http://yoursite.com/2017/11/09/hello/</id>
     <published>2017-11-09T02:41:53.000Z</published>
-    <updated>2018-11-19T08:37:09.203Z</updated>
+    <updated>2018-11-20T16:08:30.888Z</updated>
     
     <content type="html"><![CDATA[<h1 id="这是一个标题"><a href="#这是一个标题" class="headerlink" title="这是一个标题"></a>这是一个标题</h1><h2 id="这是一个指令"><a href="#这是一个指令" class="headerlink" title="这是一个指令"></a>这是一个指令</h2><pre><code class="java">System.print.out(<span class="string">"Hello Hexo!"</span>)</code></pre><blockquote><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque hendrerit lacus ut purus iaculis feugiat. Sed nec tempor elit, quis aliquam neque. Curabitur sed diam eget dolor fermentum semper at eu lorem.</p></blockquote><blockquote><p>Do not just seek happiness for yourself. Seek happiness for all. Through kindness. Through mercy.</p><footer><strong>David Levithan</strong><cite>Wide Awake</cite></footer></blockquote><blockquote><p>NEW: DevDocs now comes with syntax highlighting. <a href="http://devdocs.io" target="_blank" rel="noopener">http://devdocs.io</a></p><footer><strong>@DevDocs</strong><cite><a href="https://twitter.com/devdocs/status/356095192085962752" target="_blank" rel="noopener">twitter.com/devdocs/status/356095192085962752</a></cite></footer></blockquote><blockquote><p>Every interaction is both precious and an opportunity to delight.</p><footer><strong>Seth Godin</strong><cite><a href="http://sethgodin.typepad.com/seths_blog/2009/07/welcome-to-island-marketing.html" target="_blank" rel="noopener">Welcome to Island Marketing</a></cite></footer></blockquote>contentvvdafsadfasdffasdfadfasdfasdf]]></content>
     
@@ -158,16 +160,10 @@
     
     </summary>
     
-      <category term="Diary" scheme="http://yoursite.com/categories/Diary/"/>
-    
-      <category term="hello" scheme="http://yoursite.com/categories/Diary/hello/"/>
-    
-      <category term="uu" scheme="http://yoursite.com/categories/Diary/hello/uu/"/>
+      <category term="hello" scheme="http://yoursite.com/categories/hello/"/>
     
     
-      <category term="PS3" scheme="http://yoursite.com/tags/PS3/"/>
-    
-      <category term="Games" scheme="http://yoursite.com/tags/Games/"/>
+      <category term="hello" scheme="http://yoursite.com/tags/hello/"/>
     
   </entry>
   
