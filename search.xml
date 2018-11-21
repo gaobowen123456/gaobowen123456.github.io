@@ -1,6 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[如何基于hexo搭建博客]]></title>
+    <url>%2F2018%2F11%2F21%2F%E5%A6%82%E4%BD%95%E5%9F%BA%E4%BA%8Ehexo%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2%2F</url>
+    <content type="text"><![CDATA[前言：基于hexo建站百度已有类似很多文章，我就不重复画瓢了。不买服务器的话推荐gitee作为服务器托管。亲测gitee比github快10倍！！！ hexo相关官方网站我使用的hexo+gitee+next（主题） hexo：https://hexo.io/zh-cn/docs/ NexT（hexo主题）：https://theme-next.iissnan.com/ 如有问题请加QQ群：793379854（计算机课设不会做）]]></content>
+      <categories>
+        <category>hexo</category>
+      </categories>
+      <tags>
+        <tag>hexo</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[搭建hexo遇到的问题]]></title>
     <url>%2F2018%2F11%2F21%2F%E6%90%AD%E5%BB%BAhexo%E9%81%87%E5%88%B0%E7%9A%84%E9%97%AE%E9%A2%98%2F</url>
     <content type="text"><![CDATA[如何引用自己的文章12&#123;% post_link 文章文件名（不要后缀） 文章标题（可选） %&#125;例：&#123;% post_link 关于ShSx-G的由来 ShSx.G %&#125; 发布的图片太大（1M的图片在githubpage中卡的不能看）12我的解决方案是将图片压缩，我的用的一个在线压缩图片的网址是：https://tinypng.com/亲测1M的可以压到200k，图片清晰度还可以 nginx作为hexo的服务器访问503因为没有文件的访问权限测试nginx配置文件123[root@iz2ze88p52tbioqel09nmrz ~]# nginx -tnginx: the configuration file /etc/nginx/nginx.conf syntax is oknginx: configuration file /etc/nginx/nginx.conf test is successful 打开nginx.conf ,修改user nginx 为user root，然后重新载入配置文件命令：nginx -s reload12345678# For more information on configuration, see:# * Official English Documentation: http://nginx.org/en/docs/# * Official Russian Documentation: http://nginx.org/ru/docs/user root;worker_processes auto;error_log /var/log/nginx/error.log;pid /run/nginx.pid; nginx其他常用命令1234nginx # 启动 Nginxnginx -s reload # 重新载入配置文件nginx -s reopen # 重启 Nginxnginx -s stop # 停止 Nginx]]></content>
@@ -14,7 +25,7 @@
   <entry>
     <title><![CDATA[关于ShSx.G的由来]]></title>
     <url>%2F2018%2F11%2F19%2F%E5%85%B3%E4%BA%8EShSx-G%E7%9A%84%E7%94%B1%E6%9D%A5%2F</url>
-    <content type="text"><![CDATA[ShSx.G是我为我自己起的一个英文名字，鉴于我的英文知识比较匮乏，我也不知道这么拼写到底合不合法，反正都是英文字母和英文标点符号，应该没有什么大问题。 G的由来 我姓高，取高的拼音首字母G ShSx的由来来源于四大名著的拼音首字母，《三国演义》（S），《红楼梦》（H），《水浒传》（S），《西游记》（X）。忽略大小写，排名分先后，代表了四大名著在我心中的位置。 三国演义 此桥段是皇叔一言不慎，差点被砍死的截图。论少说话，多做事的重要性 皇叔：我X，我刚才在说什么 刘表：刘备这个比。。。]]></content>
+    <content type="text"><![CDATA[ShSx.G是我为我自己起的一个英文名字，鉴于我的英文知识比较匮乏，我也不知道这么拼写到底合不合法，反正都是英文字母和英文标点符号，应该没有什么大问题。 G的由来 我姓高，取高的拼音首字母G ShSx的由来来源于四大名著的拼音首字母，《三国演义》（S），《红楼梦》（H），《水浒传》（S），《西游记》（X）。忽略大小写，排名分先后，代表了四大名著在我心中的位置。 三国演义 此桥段是皇叔一言不慎，差点被砍死的截图。论：少说话，多做事的重要性 皇叔：我X，我刚才说了什么？ 刘表：这小子说谁呢？？]]></content>
       <categories>
         <category>about</category>
       </categories>

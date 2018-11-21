@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-11-21T02:04:58.971Z</updated>
+  <updated>2018-11-21T05:10:58.470Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>如何基于hexo搭建博客</title>
+    <link href="http://yoursite.com/2018/11/21/%E5%A6%82%E4%BD%95%E5%9F%BA%E4%BA%8Ehexo%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/"/>
+    <id>http://yoursite.com/2018/11/21/如何基于hexo搭建博客/</id>
+    <published>2018-11-21T04:51:00.000Z</published>
+    <updated>2018-11-21T05:10:58.470Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="前言："><a href="#前言：" class="headerlink" title="前言："></a>前言：</h1><p>基于hexo建站百度已有类似很多文章，我就不重复画瓢了。<br>不买服务器的话推荐gitee作为服务器托管。亲测gitee比github快10倍！！！</p><h1 id="hexo相关官方网站"><a href="#hexo相关官方网站" class="headerlink" title="hexo相关官方网站"></a>hexo相关官方网站</h1><p>我使用的hexo+gitee+next（主题）<br>   hexo：<a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="noopener">https://hexo.io/zh-cn/docs/</a><br>   NexT（hexo主题）：<a href="https://theme-next.iissnan.com/" target="_blank" rel="noopener">https://theme-next.iissnan.com/</a></p><hr><p>如有问题请加QQ群：<strong>793379854（计算机课设不会做）</strong></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;前言：&quot;&gt;&lt;a href=&quot;#前言：&quot; class=&quot;headerlink&quot; title=&quot;前言：&quot;&gt;&lt;/a&gt;前言：&lt;/h1&gt;&lt;p&gt;基于hexo建站百度已有类似很多文章，我就不重复画瓢了。&lt;br&gt;不买服务器的话推荐gitee作为服务器托管。亲测gitee比gith
+      
+    
+    </summary>
+    
+      <category term="hexo" scheme="http://yoursite.com/categories/hexo/"/>
+    
+    
+      <category term="hexo" scheme="http://yoursite.com/tags/hexo/"/>
+    
+  </entry>
   
   <entry>
     <title>搭建hexo遇到的问题</title>
@@ -46,9 +71,9 @@
     <link href="http://yoursite.com/2018/11/19/%E5%85%B3%E4%BA%8EShSx-G%E7%9A%84%E7%94%B1%E6%9D%A5/"/>
     <id>http://yoursite.com/2018/11/19/关于ShSx-G的由来/</id>
     <published>2018-11-19T15:06:58.000Z</published>
-    <updated>2018-11-20T01:31:27.765Z</updated>
+    <updated>2018-11-21T05:14:01.531Z</updated>
     
-    <content type="html"><![CDATA[<p>ShSx.G是我为我自己起的一个英文名字，鉴于我的英文知识比较匮乏，我也不知道这么拼写到底合不合法，反正都是<br>英文字母和英文标点符号，应该没有什么大问题。</p><h1 id="G的由来"><a href="#G的由来" class="headerlink" title="G的由来"></a>G的由来</h1><p>  我姓高，取高的拼音首字母G</p><h1 id="ShSx的由来"><a href="#ShSx的由来" class="headerlink" title="ShSx的由来"></a>ShSx的由来</h1><p>来源于四大名著的拼音首字母，《三国演义》（S），《红楼梦》（H），《水浒传》（S），《西游记》（X）。<br>忽略大小写，排名分先后，代表了四大名著在我心中的位置。</p><h2 id="三国演义"><a href="#三国演义" class="headerlink" title="三国演义"></a>三国演义</h2><hr><p>此桥段是皇叔一言不慎，差点被砍死的截图。论少说话，多做事的重要性</p><p><img src="/images/微信截图1.png" alt="Image text"><br><img src="/images/微信截图2.png" alt="Image text"><br><img src="/images/微信截图3.png" alt="Image text"><br><img src="/images/微信截图4.png" alt="Image text"><br><img src="/images/微信截图5.png" alt="Image text"><br><img src="/images/微信截图6.png" alt="Image text"><br><img src="/images/微信截图7.png" alt="Image text"><br><img src="/images/微信截图8.png" alt="Image text"><br><img src="/images/微信截图9.png" alt="Image text"></p><p>皇叔：我X，我刚才在说什么<br><img src="/images/微信截图10.png" alt="Image text"></p><p>刘表：刘备这个比。。。<br><img src="/images/微信截图11.png" alt="Image text"></p>]]></content>
+    <content type="html"><![CDATA[<p>ShSx.G是我为我自己起的一个英文名字，鉴于我的英文知识比较匮乏，我也不知道这么拼写到底合不合法，反正都是<br>英文字母和英文标点符号，应该没有什么大问题。</p><h1 id="G的由来"><a href="#G的由来" class="headerlink" title="G的由来"></a>G的由来</h1><p>  我姓高，取高的拼音首字母G</p><h1 id="ShSx的由来"><a href="#ShSx的由来" class="headerlink" title="ShSx的由来"></a>ShSx的由来</h1><p>来源于四大名著的拼音首字母，《三国演义》（S），《红楼梦》（H），《水浒传》（S），《西游记》（X）。<br>忽略大小写，排名分先后，代表了四大名著在我心中的位置。</p><h2 id="三国演义"><a href="#三国演义" class="headerlink" title="三国演义"></a>三国演义</h2><hr><p>此桥段是皇叔一言不慎，差点被砍死的截图。论：<strong>少说话，多做事的重要性</strong></p><p><img src="/images/微信截图1.png" alt="Image text"><br><img src="/images/微信截图2.png" alt="Image text"><br><img src="/images/微信截图3.png" alt="Image text"><br><img src="/images/微信截图4.png" alt="Image text"><br><img src="/images/微信截图5.png" alt="Image text"><br><img src="/images/微信截图6.png" alt="Image text"><br><img src="/images/微信截图7.png" alt="Image text"><br><img src="/images/微信截图8.png" alt="Image text"><br><img src="/images/微信截图9.png" alt="Image text"></p><p><img src="/images/微信截图10.png" alt="Image text"><br><strong>皇叔：我X，我刚才说了什么？</strong></p><p><img src="/images/微信截图11.png" alt="Image text"><br><strong>刘表：这小子说谁呢？？</strong></p>]]></content>
     
     <summary type="html">
     
