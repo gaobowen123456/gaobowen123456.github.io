@@ -89,6 +89,17 @@
     <content type="text"><![CDATA[慢慢来不要急，你想要的都会有的 Js自调12!function ($) &#123; //code her&#125;(window.jQuery);高级的自调函数的一种写法(function ($) &#123; //code her&#125;)(window.jQuery) 普通自调函数的一种写法 括号使得里面的匿名函数变成函数表达式！的运算优先级低于括号朔所以可以达到相同的效果1var Name=function(parameters)&#123;//这里是块级作用域&#125;;Name();//调用匿名函数 函数表达式是在运行中以引用的方式赋值给一个变量的，如上面的函数创建的方式。而这里函数表达式和函数声明是不一样的，函数声明的通常形式如下：1function Name(parameters)&#123; //code here&#125; 函数声明会在程序刚开始运行的时候会被提升（所以可以在执行之后声明），但是并不执行，直到被调用的时候再执行。 Js()表达式总结：()运算，返回的是括号里面的最后一个参数]]></content>
   </entry>
   <entry>
+    <title><![CDATA[马说]]></title>
+    <url>%2F2017%2F11%2F25%2F%E9%A9%AC%E8%AF%B4%2F</url>
+    <content type="text"><![CDATA[马说 【作者】韩愈 【朝代】唐世有伯乐，然后有千里马。千里马常有，而伯乐不常有。故虽有名马，祇辱于奴隶人之手，骈死于槽枥之间，不以千里称也。 马之千里者，一食或尽粟一石。食马者不知其能千里而食也。是马也，虽有千里之能，食不饱，力不足，才美不外见，且欲与常马等不可得，安求其能千里也？ 策之不以其道，食之不能尽其材，鸣之而不能通其意，执策而临之，曰：“天下无马！”呜呼！其真无马邪？其真不知马也！]]></content>
+      <categories>
+        <category>思考</category>
+      </categories>
+      <tags>
+        <tag>思考</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[hello]]></title>
     <url>%2F2017%2F11%2F09%2Fhello%2F</url>
     <content type="text"><![CDATA[这是一个标题这是一个指令System.print.out("Hello Hexo!") Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque hendrerit lacus ut purus iaculis feugiat. Sed nec tempor elit, quis aliquam neque. Curabitur sed diam eget dolor fermentum semper at eu lorem. Do not just seek happiness for yourself. Seek happiness for all. Through kindness. Through mercy. David LevithanWide Awake NEW: DevDocs now comes with syntax highlighting. http://devdocs.io @DevDocstwitter.com/devdocs/status/356095192085962752 Every interaction is both precious and an opportunity to delight. Seth GodinWelcome to Island Marketing contentvvdafsadfasdf fasdfadfasdfasdf]]></content>
