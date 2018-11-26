@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-11-25T11:37:43.192Z</updated>
+  <updated>2018-11-26T09:03:50.546Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>查看端口被进程占用</title>
+    <link href="http://yoursite.com/2018/11/26/%E6%9F%A5%E7%9C%8B%E7%AB%AF%E5%8F%A3%E8%A2%AB%E8%BF%9B%E7%A8%8B%E5%8D%A0%E7%94%A8/"/>
+    <id>http://yoursite.com/2018/11/26/查看端口被进程占用/</id>
+    <published>2018-11-26T08:49:33.000Z</published>
+    <updated>2018-11-26T09:03:50.546Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="windows"><a href="#windows" class="headerlink" title="windows"></a>windows</h1><p>查询20880被谁占用，在任务管理器找到相关进程（pid），结束任务即可<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">C:\Users\lenovo&gt;netstat -aon|findstr &quot;20880&quot;</span><br><span class="line">                                                                       pid                              </span><br><span class="line">  TCP    0.0.0.0:20880          0.0.0.0:0              LISTENING       15744</span><br><span class="line">  TCP    10.6.252.40:20880      10.6.252.40:62321      ESTABLISHED     15744</span><br><span class="line">  TCP    10.6.252.40:20880      10.6.252.40:62422      ESTABLISHED     15744</span><br><span class="line">  TCP    10.6.252.40:62321      10.6.252.40:20880      ESTABLISHED     11308</span><br><span class="line">  TCP    10.6.252.40:62422      10.6.252.40:20880      ESTABLISHED     2536</span><br><span class="line">  TCP    [::]:20880             [::]:0                 LISTENING       15744</span><br></pre></td></tr></table></figure></p><h1 id="linux"><a href="#linux" class="headerlink" title="linux"></a>linux</h1><p>netstat -tunlp |grep 端口号，用于查看指定的端口号的进程情况，如查看80端口的情况，netstat -tunlp |grep 80<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">[root@iz2ze88p52tbioqel09nmrz ~]# netstat -tunlp</span><br><span class="line">Active Internet connections (only servers)</span><br><span class="line">Proto Recv-Q Send-Q Local Address           Foreign Address         State       PID/Program name</span><br><span class="line">tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      20618/nginx: master</span><br><span class="line">tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN      1138/sshd</span><br><span class="line">tcp6       0      0 :::80                   :::*                    LISTEN      20618/nginx: master</span><br><span class="line">udp        0      0 0.0.0.0:57373           0.0.0.0:*                           706/dhclient</span><br><span class="line">udp        0      0 0.0.0.0:68              0.0.0.0:*                           706/dhclient</span><br><span class="line">udp        0      0 172.17.66.158:123       0.0.0.0:*                           806/ntpd</span><br><span class="line">udp        0      0 127.0.0.1:123           0.0.0.0:*                           806/ntpd</span><br><span class="line">udp        0      0 0.0.0.0:123             0.0.0.0:*                           806/ntpd</span><br><span class="line">udp6       0      0 :::53341                :::*                                706/dhclient</span><br><span class="line">udp6       0      0 :::123                  :::*                                806/ntpd</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">[root@iz2ze88p52tbioqel09nmrz ~]# netstat -tunlp | grep 80</span><br><span class="line">tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN      20618/nginx: master</span><br><span class="line">tcp6       0      0 :::80                   :::*                    LISTEN      20618/nginx: master</span><br><span class="line">udp        0      0 172.17.66.158:123       0.0.0.0:*                           806/ntpd</span><br><span class="line">udp        0      0 127.0.0.1:123           0.0.0.0:*                           806/ntpd</span><br><span class="line">udp        0      0 0.0.0.0:123             0.0.0.0:*                           806/ntpd</span><br><span class="line">udp6       0      0 :::123                  :::*                                806/ntpd</span><br></pre></td></tr></table></figure></p><p>说明一下几个参数的含义：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-t (tcp) 仅显示tcp相关选项</span><br><span class="line">-u (udp)仅显示udp相关选项</span><br><span class="line">-n 拒绝显示别名，能显示数字的全部转化为数字</span><br><span class="line">-l 仅列出在Listen(监听)的服务状态</span><br><span class="line">-p 显示建立相关链接的程序名</span><br></pre></td></tr></table></figure></p><p>如果想解除端口占用 kill PID<br>例如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kill 20618</span><br></pre></td></tr></table></figure></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;windows&quot;&gt;&lt;a href=&quot;#windows&quot; class=&quot;headerlink&quot; title=&quot;windows&quot;&gt;&lt;/a&gt;windows&lt;/h1&gt;&lt;p&gt;查询20880被谁占用，在任务管理器找到相关进程（pid），结束任务即可&lt;br&gt;&lt;figure cl
+      
+    
+    </summary>
+    
+      <category term="linux" scheme="http://yoursite.com/categories/linux/"/>
+    
+    
+      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
+    
+  </entry>
   
   <entry>
     <title>spring源码赏析二</title>
