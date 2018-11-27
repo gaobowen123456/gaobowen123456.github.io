@@ -108,16 +108,18 @@
 
 
 
-  <meta name="description" content="求知若渴，虚心若愚">
-<meta property="og:type" content="website">
-<meta property="og:title" content="照葫芦画瓢">
-<meta property="og:url" content="http://yoursite.com/categories/思考/index.html">
+  <meta name="description" content="设计关系数据库时，遵从不同的规范要求，设计出合理的关系型数据库，这些不同的规范要求被称为不同的范式，各种范式呈递次规范，越高的范式数据库冗余越良好结构的数据库，可以减少数据冗余。 第一范式所谓第一范式（1NF）是指在关系模型中，对于添加的一个规范要求，所有的域都应该是原子性的，即数据库表的每一列都是不可分割的原子数据项，而不能是集合，数组，记录等非原子数据项。什么叫做不可分割的原子项，比如有个用户">
+<meta name="keywords" content="数据库">
+<meta property="og:type" content="article">
+<meta property="og:title" content="数据库三大范式">
+<meta property="og:url" content="http://yoursite.com/2018/11/27/数据库三大范式/index.html">
 <meta property="og:site_name" content="照葫芦画瓢">
-<meta property="og:description" content="求知若渴，虚心若愚">
+<meta property="og:description" content="设计关系数据库时，遵从不同的规范要求，设计出合理的关系型数据库，这些不同的规范要求被称为不同的范式，各种范式呈递次规范，越高的范式数据库冗余越良好结构的数据库，可以减少数据冗余。 第一范式所谓第一范式（1NF）是指在关系模型中，对于添加的一个规范要求，所有的域都应该是原子性的，即数据库表的每一列都是不可分割的原子数据项，而不能是集合，数组，记录等非原子数据项。什么叫做不可分割的原子项，比如有个用户">
 <meta property="og:locale" content="zh-CN">
+<meta property="og:updated_time" content="2018-11-27T13:09:40.768Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="照葫芦画瓢">
-<meta name="twitter:description" content="求知若渴，虚心若愚">
+<meta name="twitter:title" content="数据库三大范式">
+<meta name="twitter:description" content="设计关系数据库时，遵从不同的规范要求，设计出合理的关系型数据库，这些不同的规范要求被称为不同的范式，各种范式呈递次规范，越高的范式数据库冗余越良好结构的数据库，可以减少数据冗余。 第一范式所谓第一范式（1NF）是指在关系模型中，对于添加的一个规范要求，所有的域都应该是原子性的，即数据库表的每一列都是不可分割的原子数据项，而不能是集合，数组，记录等非原子数据项。什么叫做不可分割的原子项，比如有个用户">
 
 
 
@@ -126,7 +128,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/categories/思考/">
+  <link rel="canonical" href="http://yoursite.com/2018/11/27/数据库三大范式/">
 
 
 
@@ -136,7 +138,7 @@
   };
 </script>
 
-  <title>分类: 思考 | 照葫芦画瓢</title>
+  <title>数据库三大范式 | 照葫芦画瓢</title>
   
 
 
@@ -185,7 +187,7 @@
     
   
 
-  <div class="container sidebar-position-right ">
+  <div class="container sidebar-position-right page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope="" itemtype="http://schema.org/WPHeader">
@@ -273,7 +275,7 @@
         
         
           
-          <li class="menu-item menu-item-categories menu-item-active">
+          <li class="menu-item menu-item-categories">
 
     
     
@@ -361,83 +363,479 @@
           
             
 
-    
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-      
-      
-    
-    
-
-  
-
-
           
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block category">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>思考<small>分类</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
+
+  
 
   <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/27/数据库三大范式/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="ShSx">
+      <meta itemprop="description" content="求知若渴，虚心若愚">
+      <meta itemprop="image" content="/images/avatar.jpg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="照葫芦画瓢">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2017/11/25/马说/" itemprop="url">
-              
-                <span itemprop="name">马说</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">数据库三大范式
+              
+            
+          </h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated" datetime="2017-11-25T20:59:22+08:00" content="2017-11-25">
-          11-25
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
 
-    </header>
-  </article>
+            
+            
+            
 
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+
+              
+                
+              
+
+              <time title="创建时间：2018-11-27 18:52:26 / 修改时间：21:09:40" itemprop="dateCreated datePublished" datetime="2018-11-27T18:52:26+08:00">2018-11-27</time>
+            
+
+            
+              
+
+              
+            
+          </span>
+
+          
+            <span class="post-category">
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing"><a href="/categories/数据库/" itemprop="url" rel="index"><span itemprop="name">数据库</span></a></span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/11/27/数据库三大范式/#comments" itemprop="discussionUrl">
+                  <span class="post-meta-item-text">评论数：</span> <span class="post-comments-count valine-comment-count" data-xid="/2018/11/27/数据库三大范式/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+             <span id="/2018/11/27/数据库三大范式/" class="leancloud_visitors" data-flag-title="数据库三大范式">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数：</span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>设计关系数据库时，遵从不同的规范要求，设计出合理的关系型数据库，这些不同的规范要求被称为不同的范式，各种范式呈递次规范，越高的范式数据库冗余越良好结构的数据库，可以减少数据冗余。</p>
+<h1 id="第一范式"><a href="#第一范式" class="headerlink" title="第一范式"></a>第一范式</h1><p>所谓第一范式（1NF）是指在关系模型中，对于添加的一个规范要求，所有的域都应该是原子性的，<strong>即数据库表的每一列都是不可分割的原子数据项</strong>，而不能是集合，数组，记录等非原子数据项。<br>什么叫做不可分割的原子项，比如有个<br>用户信息表：</p>
+<table>
+<thead>
+<tr>
+<th>用户编号</th>
+<th>姓名</th>
+<th>专业</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>张三</td>
+<td>兰州理工大学软件工程</td>
+</tr>
+<tr>
+<td>2</td>
+<td>李四</td>
+<td>兰州龚家湾技校挖土机专业</td>
+</tr>
+</tbody>
+</table>
+<p>我想找兰州龚家湾技校的人，直接查询专业是不方便的，按照我目前的需求，<br>所以专业这个列还可以接着再拆分</p>
+<table>
+<thead>
+<tr>
+<th>用户编号</th>
+<th>姓名</th>
+<th>学校</th>
+<th>专业名称</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>张三</td>
+<td>兰州理工大学</td>
+<td>软件工程</td>
+</tr>
+<tr>
+<td>2</td>
+<td>李四</td>
+<td>兰州龚家湾技校</td>
+<td>挖土机专业</td>
+</tr>
+</tbody>
+</table>
+<p>这样就不错了，我想找按照学校过滤就方便多了</p>
+<h1 id="第二范式"><a href="#第二范式" class="headerlink" title="第二范式"></a>第二范式</h1><p>第二范式（2NF）<strong>要求实体的属性完全依赖于主关键字。所谓完全依赖是指不能存在仅依赖主关键字一部分的属性，</strong>如果存在，那么这个属性和主关键字的这一部分应该分离出来形成一个新的实体，新实体与原实体之间是一对多的关系。为实现区分通常需要为表加上一个列，以存储各个实例的唯一标识。简而言之，<strong>第二范式就是在第一范式的基础上属性完全依赖于主键</strong>。<br>比如我们在填报志愿（此处是假设，与现实填报志愿不符）的时候，我们的<strong>学生编号，学校编号，专业编号可以组成联合主键</strong>，可以确定一个填报志愿</p>
+<p>申请志愿表</p>
+<table>
+<thead>
+<tr>
+<th>学生编号</th>
+<th>姓名</th>
+<th>学校编号</th>
+<th>学校名称</th>
+<th>学校邮编</th>
+<th>专业编号</th>
+<th>专业名称</th>
+<th>填报时间</th>
+<th>是否服从调剂</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>张三</td>
+<td>1</td>
+<td>兰州理工大学</td>
+<td>247000</td>
+<td>1</td>
+<td>软件工程</td>
+<td>2014-6-25</td>
+<td>否</td>
+</tr>
+<tr>
+<td>2</td>
+<td>李四</td>
+<td>2</td>
+<td>山东蓝翔技校</td>
+<td>349000</td>
+<td>2</td>
+<td>挖土机专业</td>
+<td>2014-6-26</td>
+<td>否</td>
+</tr>
+</tbody>
+</table>
+<p>学生名称部分依赖于学生编号，学校邮编和学校名称部分依赖于学校编号，专业名称部分依赖于专业编号</p>
+<p>下面我们对申请志愿表按照第二范式进行拆分</p>
+<p>学生表</p>
+<table>
+<thead>
+<tr>
+<th>学生编号</th>
+<th>姓名</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>张三</td>
+</tr>
+<tr>
+<td>2</td>
+<td>李四</td>
+</tr>
+</tbody>
+</table>
+<p>学校表</p>
+<table>
+<thead>
+<tr>
+<th>学校编号</th>
+<th>学校名称</th>
+<th>学校邮编</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>兰州理工大学</td>
+<td>247000</td>
+</tr>
+<tr>
+<td>2</td>
+<td>山东蓝翔技校</td>
+<td>349000</td>
+</tr>
+<tr>
+<td>3</td>
+<td>兰州龚家湾技校</td>
+<td>249997</td>
+</tr>
+</tbody>
+</table>
+<p>专业表</p>
+<table>
+<thead>
+<tr>
+<th>专业编号</th>
+<th>专业名称</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>软件工程</td>
+</tr>
+<tr>
+<td>2</td>
+<td>挖土机专业</td>
+</tr>
+</tbody>
+</table>
+<p>新的申请志愿表</p>
+<table>
+<thead>
+<tr>
+<th>学生编号</th>
+<th>学校编号</th>
+<th>专业编号</th>
+<th>填报时间</th>
+<th>是否服从天调剂</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>2014-6-25</td>
+<td>否</td>
+</tr>
+<tr>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2014-6-25</td>
+<td>否</td>
+</tr>
+</tbody>
+</table>
+<h1 id="第三范式"><a href="#第三范式" class="headerlink" title="第三范式"></a>第三范式</h1><p>在2NF基础上，<strong>任何非主属性不依赖于其它非主属性（在2NF基础上消除传递依赖</strong><br>第三范式（3NF）是第二范式（2NF）的一个子集，即满足第三范式（3NF）必须满足第二范式（2NF）。<br>简而言之，第三范式（3NF）要求一个关系中不包含已在其它关系已包含的非主关键字信息。<br>假设我们的申请志愿表有个<strong>唯一编号作为主键，即志愿编号</strong></p>
+<p><strong>非主属性学校名称是依赖于非主属性学校编号的，还有专业名称依赖于专业编号等</strong><br>申请志愿表</p>
+<table>
+<thead>
+<tr>
+<th>志愿编号</th>
+<th>学生编号</th>
+<th>姓名</th>
+<th>学校编号</th>
+<th>学校名称</th>
+<th>学校邮编</th>
+<th>专业编号</th>
+<th>专业名称</th>
+<th>填报时间</th>
+<th>是否服从调剂</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>001</td>
+<td>1</td>
+<td>张三</td>
+<td>1</td>
+<td>兰州理工大学</td>
+<td>247000</td>
+<td>1</td>
+<td>软件工程</td>
+<td>2014-6-25</td>
+<td>否</td>
+</tr>
+<tr>
+<td>002</td>
+<td>2</td>
+<td>李四</td>
+<td>2</td>
+<td>山东蓝翔技校</td>
+<td>349000</td>
+<td>2</td>
+<td>挖土机专业</td>
+<td>2014-6-26</td>
+<td>否</td>
+</tr>
+</tbody>
+</table>
+<p>所以学校表，专业表拆分和第二范式类似</p>
+<p>新的申请志愿表</p>
+<table>
+<thead>
+<tr>
+<th>志愿编号</th>
+<th>学生编号</th>
+<th>学校编号</th>
+<th>专业编号</th>
+<th>填报时间</th>
+<th>是否服从天调剂</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>001</td>
+<td>1</td>
+<td>1</td>
+<td>1</td>
+<td>2014-6-25</td>
+<td>否</td>
+</tr>
+<tr>
+<td>002</td>
+<td>2</td>
+<td>2</td>
+<td>2</td>
+<td>2014-6-25</td>
+<td>否</td>
+</tr>
+</tbody>
+</table>
+<p>其他表的拆分与第二范式相同，第三范式其实是第二范式的一个子集，满足三范式就一定满足第二范式</p>
 
       
     </div>
 
+    
+
+    
+    
+    
+
+    
+
+    
+       
+    
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/数据库/" rel="tag"># 数据库</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/11/26/CAP原则/" rel="next" title="CAP原则">
+                <i class="fa fa-chevron-left"></i> CAP原则
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+  </div>
 
 
           </div>
           
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
 
         </div>
         
@@ -458,8 +856,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
             
@@ -599,6 +1006,22 @@
       </section>
 
       
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#第一范式"><span class="nav-number">1.</span> <span class="nav-text">第一范式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第二范式"><span class="nav-number">2.</span> <span class="nav-text">第二范式</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#第三范式"><span class="nav-number">3.</span> <span class="nav-text">第三范式</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
 
       
 
@@ -733,6 +1156,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=6.5.0"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=6.5.0"></script>
+
+
 
   
 
@@ -1112,43 +1539,42 @@
   
   <script>
     
-    function showTime(Counter) {
-      var entries = [];
+    function addCount(Counter) {
       var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
 
-      $visitors.each(function () {
-        entries.push( $(this).attr("id").trim() );
-      });
-
-      Counter('get', '/classes/Counter', { where: JSON.stringify({ url: { "$in": entries } }) })
+      Counter('get', '/classes/Counter', { where: JSON.stringify({ url }) })
         .done(function ({ results }) {
-          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
-
-          if (results.length === 0) {
-            $visitors.find(COUNT_CONTAINER_REF).text(0);
-            return;
-          }
-
-          for (var i = 0; i < results.length; i++) {
-            var item = results[i];
-            var url = item.url;
-            var time = item.time;
-            var element = document.getElementById(url);
-
-            $(element).find(COUNT_CONTAINER_REF).text(time);
-          }
-          for(var i = 0; i < entries.length; i++) {
-            var url = entries[i];
-            var element = document.getElementById(url);
-            var countSpan = $(element).find(COUNT_CONTAINER_REF);
-            if( countSpan.text() == '') {
-              countSpan.text(0);
-            }
+          if (results.length > 0) {
+            var counter = results[0];
+            
+            Counter('put', `/classes/Counter/${counter.objectId}`, JSON.stringify({ time: { "__op":"Increment", "amount":1 } }))
+            
+            .done(function () {
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(counter.time + 1);
+            })
+            
+            .fail(function ({ responseJSON }) {
+                console.log('Failed to save Visitor num, with error message: ' + responseJSON.error);
+            })
+          } else {
+            
+              Counter('post', '/classes/Counter', JSON.stringify({ title: title, url: url, time: 1}))
+                .done(function () {
+                  var $element = $(document.getElementById(url));
+                  $element.find('.leancloud-visitors-count').text(1);
+                })
+                .fail(function () {
+                  console.log('Failed to create');
+                });
+            
           }
         })
-        .fail(function ({ responseJSON }) {
-          console.log("LeanCloud Counter Error: " + responseJSON.code + " " + responseJSON.error);
-        });
+      .fail(function ({ responseJSON }) {
+        console.log('LeanCloud Counter Error:' + responseJSON.code + " " + responseJSON.error);
+      });
     }
     
 
@@ -1168,9 +1594,7 @@
             });
           };
           
-          if ($('.post-title-link').length >= 1) {
-            showTime(Counter);
-          }
+          addCount(Counter);
           
         })
     });
