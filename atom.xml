@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-11-27T13:09:40.768Z</updated>
+  <updated>2018-11-30T12:41:14.396Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,31 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>java线程安全与锁优化</title>
+    <link href="http://yoursite.com/2018/11/30/java%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E4%B8%8E%E9%94%81%E4%BC%98%E5%8C%96/"/>
+    <id>http://yoursite.com/2018/11/30/java线程安全与锁优化/</id>
+    <published>2018-11-30T10:31:25.000Z</published>
+    <updated>2018-11-30T12:41:14.396Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="线程安全的实现方法"><a href="#线程安全的实现方法" class="headerlink" title="线程安全的实现方法"></a>线程安全的实现方法</h1><h2 id="1-互斥同步"><a href="#1-互斥同步" class="headerlink" title="1.互斥同步"></a>1.互斥同步</h2><p>互斥同步是是常见的一种并发正确性保障手段。<br>同步是指在在多线程并发访问共享数据时，保证共享数据在同一时刻只被一个（或者是一些，使用信号量的时候）线程使用。<br>互斥是实现同步的一种手段<br>互斥的实现三种方式</p><ol><li>临界区</li><li>互斥量</li><li>信号量</li></ol><h3 id="java-中最基本的互斥同步手段是使用synchronized"><a href="#java-中最基本的互斥同步手段是使用synchronized" class="headerlink" title="java 中最基本的互斥同步手段是使用synchronized"></a>java 中最基本的互斥同步手段是使用synchronized</h3><p>synchronized被编译后，同步块前后会形成monitorenter和monitorexit这两个字节码指令，<br>这两个指令都需要一个reference类型的参数来指定锁定和解锁的对象<br>如果synchronized指定了对象参数，那就是这个对象的reference<br>如果没有指定，根据修饰的是类方法还是实例方法类确定<br>修饰的类方法：Class对象<br>实例方法：对象实例</p><h3 id="使用java-util-concurrent下的ReentrantLock（重入锁）"><a href="#使用java-util-concurrent下的ReentrantLock（重入锁）" class="headerlink" title="使用java.util.concurrent下的ReentrantLock（重入锁）"></a>使用java.util.concurrent下的ReentrantLock（重入锁）</h3><p>ReentrantLock相对与synchronized的增强</p><h5 id="等待可中断"><a href="#等待可中断" class="headerlink" title="等待可中断"></a>等待可中断</h5><p>是指当持有锁的线程长时间不释放锁的时候，正在等待的线程可以选择放弃等待，去做其他的事情。</p><h5 id="可实现公平锁"><a href="#可实现公平锁" class="headerlink" title="可实现公平锁"></a>可实现公平锁</h5><p>是指多个线程在等待同一个锁的时候，必须按着申请锁的时间顺序依次获取锁。synchronized和ReentrantLock默认是非公平锁</p><h5 id="锁可以绑定多个条件"><a href="#锁可以绑定多个条件" class="headerlink" title="锁可以绑定多个条件"></a>锁可以绑定多个条件</h5><p>synchronized锁对象的wait(),notify(),notifyAll()方法可以实现一个隐含的条件。想要增加条件关联，必须增加锁。<br>而ReentrantLock只需要new Condition()即可<br>jdk1.5版本ReentrantLock的吞吐量是优于synchronized的<br>jdk1.6做了优化，提倡在synchronized能实现的情况下，优先使用synchronized</p><h2 id="2-非阻塞同步"><a href="#2-非阻塞同步" class="headerlink" title="2.非阻塞同步"></a>2.非阻塞同步</h2><p><strong>互斥同步主要是线程阻塞和唤醒所带来的性能问题，所有这种同步也成为阻塞同步</strong><br>从处理问题的方式来看，互斥同步属于一种<strong>悲观并发策略</strong>，总是认为只要不同步，就会出现问题<br>另一种方式是基于冲突检测的<strong>乐观并发策略</strong>，假设没有冲突，先进行操作，如果没有其他线程争用共享数据，<br>则操作成功，如果有，产生了冲突，采用补偿机制，最常用的补偿机制是<strong>(不断重试，直到成功为止)</strong><br>最常用的技术就是<strong>CAS（Compare-and—Swap）</strong><br>CAS有三个值<br>V(内存地址)<br>A(旧的预期值)<br>B(新值)<br>当且仅当V符合旧的预期值A时，处理器用新的B更新V的值，否则不会更新，但是无论是否更新，都会返回V的旧值。</p><p>CAS有个漏洞<strong>ABA</strong>问题，可通过为值加版本号来解决</p><h2 id="3-无同步方案"><a href="#3-无同步方案" class="headerlink" title="3.无同步方案"></a>3.无同步方案</h2><p><strong>可重入代码</strong><br>如果一个方法，结果是可预测的，输入相同的数据，返回相同的结果，它就满足可重入性的要求，也就是线程安全的<br><strong>线程本地存储</strong><br>如果一个变量要被多线程访问，可以使用volatile关键字声明它为”易变的”<br>如果一个变量要被某线程独享，可以使用ThreadLocal，使用线程池的时候一定要注意线程复用问题</p><h1 id="锁优化"><a href="#锁优化" class="headerlink" title="锁优化"></a>锁优化</h1><h2 id="1-自旋锁和自适应自旋"><a href="#1-自旋锁和自适应自旋" class="headerlink" title="1.自旋锁和自适应自旋"></a>1.自旋锁和自适应自旋</h2><h2 id="2-锁消除"><a href="#2-锁消除" class="headerlink" title="2.锁消除"></a>2.锁消除</h2><h2 id="3-锁粗化"><a href="#3-锁粗化" class="headerlink" title="3.锁粗化"></a>3.锁粗化</h2><h2 id="4-轻量级锁"><a href="#4-轻量级锁" class="headerlink" title="4.轻量级锁"></a>4.轻量级锁</h2><h2 id="5-偏向锁"><a href="#5-偏向锁" class="headerlink" title="5.偏向锁"></a>5.偏向锁</h2>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;线程安全的实现方法&quot;&gt;&lt;a href=&quot;#线程安全的实现方法&quot; class=&quot;headerlink&quot; title=&quot;线程安全的实现方法&quot;&gt;&lt;/a&gt;线程安全的实现方法&lt;/h1&gt;&lt;h2 id=&quot;1-互斥同步&quot;&gt;&lt;a href=&quot;#1-互斥同步&quot; class=&quot;head
+      
+    
+    </summary>
+    
+      <category term="线程安全" scheme="http://yoursite.com/categories/%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8/"/>
+    
+    
+      <category term="线程安全" scheme="http://yoursite.com/tags/%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8/"/>
+    
+  </entry>
   
   <entry>
     <title>数据库三大范式</title>
@@ -215,9 +240,9 @@
     <link href="http://yoursite.com/2018/11/18/about/"/>
     <id>http://yoursite.com/2018/11/18/about/</id>
     <published>2018-11-18T04:28:05.000Z</published>
-    <updated>2018-11-25T12:57:04.762Z</updated>
+    <updated>2018-12-02T08:34:22.656Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="个人简介"><a href="#个人简介" class="headerlink" title="个人简介"></a>个人简介</h1><hr><p>我是 <a href="/2018/11/19/关于ShSx-G的由来/" title="ShSx.G">ShSx.G</a> （主要是看大家都有），javaer，现在居住在北京，未来想去杭州发展。<br>鉴于我的英文名字不好拼，拼出来也不好听，所以还是不要叫我的英文名字了。<br>由于我擅长画瓢，可以叫我小瓢（^_^）！！！<br>如果用一个词形容自己的话，我觉得是：善良。</p><h1 id="教育背景"><a href="#教育背景" class="headerlink" title="教育背景"></a>教育背景</h1><hr><table><thead><tr><th>毕业院校</th><th>专业</th><th>时间</th><th>学历</th></tr></thead><tbody><tr><td>兰州理工大学</td><td>软件工程</td><td>2013-9至2017-6</td><td>本科</td></tr></tbody></table><h1 id="工作经历"><a href="#工作经历" class="headerlink" title="工作经历"></a>工作经历</h1><hr><table><thead><tr><th>工作单位</th><th>职位</th><th>时间</th></tr></thead><tbody><tr><td>用友</td><td>软件开发实习生</td><td>2016-12至2017-5</td></tr><tr><td>用友</td><td>软件开发工程师</td><td>2017-6至今</td></tr></tbody></table><h1 id="我做过什么"><a href="#我做过什么" class="headerlink" title="我做过什么"></a>我做过什么</h1><hr><ol><li>目前维护公司的ToB的审批流平台，与审批流相关的业务还算了解</li><li>工作中做过eclipse插件，以帮助公司的其他项目快速开发</li><li>使用java写了一个类似于有道词典的划屏取词的工具</li><li>使用Hexo+nignx+git搭建个人博客</li></ol><h1 id="我的希望"><a href="#我的希望" class="headerlink" title="我的希望"></a>我的希望</h1><hr><p>目前想在杭州找一份java开发的相关工作，如果有合适的岗位，可以给我发一份邮件，或者打电话聊聊，非常感谢(^_^)！<br>我的邮箱：<a href="mailto:1183782035@qq.com" target="_blank" rel="noopener">1183782035@qq.com</a><br>我的电话：13401002587</p>]]></content>
+    <content type="html"><![CDATA[<h1 id="个人简介"><a href="#个人简介" class="headerlink" title="个人简介"></a>个人简介</h1><hr><p>我是 <a href="/2018/11/19/关于ShSx-G的由来/" title="ShSx.G">ShSx.G</a> （主要是看大家都有），javaer，现在居住在北京，未来想去杭州发展。<br>鉴于我的英文名字不好拼，拼出来也不好听，所以还是不要叫我的英文名字了。<br>由于我擅长画瓢，可以叫我小瓢（^_^）！！！<br>如果用一个词形容自己的话，我觉得是：善良。</p><h1 id="教育背景"><a href="#教育背景" class="headerlink" title="教育背景"></a>教育背景</h1><hr><table><thead><tr><th>毕业院校</th><th>专业</th><th>时间</th><th>学历</th></tr></thead><tbody><tr><td>兰州理工大学</td><td>软件工程</td><td>2013-9至2017-6</td><td>本科</td></tr></tbody></table><h1 id="工作经历"><a href="#工作经历" class="headerlink" title="工作经历"></a>工作经历</h1><hr><table><thead><tr><th>工作单位</th><th>职位</th><th>时间</th></tr></thead><tbody><tr><td>用友</td><td>软件开发实习生</td><td>2016-12至2017-5</td></tr><tr><td>用友</td><td>软件开发工程师</td><td>2017-6至今</td></tr></tbody></table><h1 id="我做过什么"><a href="#我做过什么" class="headerlink" title="我做过什么"></a>我做过什么</h1><hr><ol><li>目前维护公司的ToB的审批流平台，与审批流相关的业务还算了解</li><li>工作中做过eclipse插件，以帮助公司的其他项目快速开发</li><li>使用java写了一个类似于有道词典的划屏取词的工具</li><li>使用Hexo+nignx+git搭建个人博客</li></ol><h1 id="我的希望"><a href="#我的希望" class="headerlink" title="我的希望"></a>我的希望</h1><hr><p>目前想在深圳或杭州找一份java开发的相关工作，如果有合适的岗位，可以给我发一份邮件，或者打电话聊聊，非常感谢(^_^)！<br>我的邮箱：<a href="mailto:1183782035@qq.com" target="_blank" rel="noopener">1183782035@qq.com</a><br>我的电话：13401002587</p>]]></content>
     
     <summary type="html">
     
