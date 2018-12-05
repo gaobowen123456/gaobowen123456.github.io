@@ -1,6 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[k8s培训]]></title>
+    <url>%2F2018%2F12%2F04%2Fk8s%E5%9F%B9%E8%AE%AD%2F</url>
+    <content type="text"><![CDATA[为什么要用k8srancher ，k8s，docker原生， k8s多master的安装kube-controller—manager 有很多controller，私有云搭建使用这个cloud-controller—manager 近期出现的版本，给云供应商来控制kube-apiserver 通信的接口，对内通信还有通过etcd 元数据存了那些信息kube-sheduler所有的数据的存储，通过kube-apiserver沟通kubeletkube-proxy1.k8s cluster 所有元数据都存在etcd cluter中2.所有元数据的存储都通过API server来实现的总结manager用来管理 k8s的常用概念架构与运维路线图ansibleansible是新出现的自动化运维工具，基于Python开发，集合了众多运维工具（puppet、cfengine、chef、func、fabric）的优点，实现了批量系统配置、批量程序部署、批量运行命令等功能。ansible是基于模块工作的，本身没有批量部署的能力。真正具有批量部署的是ansible所运行的模块，ansible只是提供一种框架。主要包括：(1)、连接插件connection plugins：负责和被监控端实现通信；(2)、host inventory：指定操作的主机，是一个配置文件里面定义监控的主机；(3)、各种模块核心模块、command模块、自定义模块；(4)、借助于插件完成记录日志邮件等功能；(5)、playbook：剧本执行多个任务时，非必需可以让节点一次性运行多个任务。 k8s 架构——常用概念 只能在单个主机上运行，跨主机通讯需要使用多个端口映射2.pod 多个容器可以使用同一ip地址 网络flannelcalico4.coredns每个服务都是唯一的域名]]></content>
+      <categories>
+        <category>k8s</category>
+      </categories>
+      <tags>
+        <tag>k8s</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[垃圾收集器与内存分配策略]]></title>
+    <url>%2F2018%2F12%2F03%2F%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E4%B8%8E%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5%2F</url>
+    <content type="text"><![CDATA[引用计数算法给对象添加一个引用计数器，每当一个地方引用的时候，计数器加1，引用失效，计数器减1，任何时刻，计数器为0，则则对象不可能在被使用。此算法的问题：难以解决相互引用问题。objA有一个属性引用了objB,objB有一个属性引用了objA，如果外界没有objA和objB的引用，则这两个对象就应该被回收。 可达性分析算法基本思路是通过一系列的称为”GC Roots”的对象作为起始点，从这些节点开始往下搜索，搜索走过的路径称为引用链（Reference Chain），当一个对象到GC Roots没有任何引用链相连（称GC Roots 到这个对象不可达）时，则证明此对象不可用，可回收。java中，可作为GC Roots的对象包括以下几种：1.虚拟机栈（栈帧中的本地变量表）中引用的对象2.方法区中静态属性引用的对象3.方法区中常量引用的对象4.本地方法栈中JNI引用的对象 再谈引用JDK1.2以前，java的引用定义：如果reference类型的数据中存储的数据代表的是另一块数据内存的起始地址，就称为这块内存代表着一个引用。 JDK1.2之后，java对引用进行了扩充，强引用（Strong Reference）,软引用（Soft Reference），弱引用（Weak Reference），虚引用（Phantom Reference）4种，这4种强度依次减弱。 强引用强引用普遍存在，类似Object obj=new Object(),只要强引用还存在，垃圾回收器永远不会回收掉引用的对象。 软引用描述一些还有用带不是必须的对象。在系统将要发生内存溢出异常之前，将会把这些对象列进回收范围之中进行二次回收。如果还没有足够的内存，再抛出异常。JDK1.2之后，提供了SoftReference类来实现软引用 弱引用弱引用也是用来描述非必须对象的，它比软引用更弱一些，被弱引用引用的对象只能生存到下次垃圾收集之前。当垃圾收集器工作时，无论当前内存是否足够，都会回收掉直被弱引用关联的对象。JDK1.2之后，通过WeakReference类来实现弱引用。 虚引用虚引用称为幽灵引用或者幻影引用。它是最弱的一种引用关系。一个对象是否有虚引用的存在，完全不会对其生存时间构成影响。也不能通过虚引用来取得一个对象实例。唯一的目的是对象被回收的时候可以收到一个系统通知。JDK1.2以后通过PhantomReference来实现虚引用 生存还是死亡在可达性分析算法中不可达的对象，必须经历两次标记的过程才会被回收。对象进行可达性分析后发现不可达，那它会被第一次标记并且进行一次筛选，筛选的条件是此对象是否有必要执行finalize()方法。当对象没有覆盖finalize()方法或finalize()已经被虚拟机调用过，虚拟机将这两种情况视为”没必要执行”。如果对象被判定为有必要执行finalize(),则将会将该对象放入一个队列。单独起一个线程调用队列中的finalize()方法。]]></content>
+      <categories>
+        <category>jvm</category>
+      </categories>
+      <tags>
+        <tag>jvm</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[java内存区域]]></title>
+    <url>%2F2018%2F12%2F03%2Fjava%E5%86%85%E5%AD%98%E5%8C%BA%E5%9F%9F%2F</url>
+    <content type="text"><![CDATA[运行时数据区域程序计数器线程私有 java虚拟机栈线程私有 本地方法栈线程私有 java堆线程公有 方法区存放被虚拟机加载的类信息，常量，静态变量，即时编译器编译后的代码等数据线程公有（又称为永久代）运行时常量池（Runtime Constant Pool）是方法去的一部分，用于存放编译器的各种字面量和符号引用。 直接内存直接内存（Direct Memory）不是虚拟机运行数据的一部分，也不是java虚拟机滚翻中定义的区域在JDK1.4中新加入的NIO（New Input/Output）,引入了一种基于通道与缓冲区的I/O方式，可以使用Native方式直接分配内存，然后通过一个存储在java堆中的DirectBuffer对象作为这块内存的的引用进行操作。为了提高性能，避免在Java对和Native堆中来回复制。直接内存不受java堆大小的限制，但是会受到本机内存大小的限制。 对象的创建new 指令之后，先检查后面的参数是否能在常量池中定位到一个类的符号引用，并且检查这个符号引用是否已经加载解析和初始化过如果没有，先执行子昂用的类加载过程。类加载检查通过后，虚拟机为新生的对象分配内存分配内存有三种方式指针碰撞（Bump the Pionter）所有用过的内存放在一边，空闲的放在一边，中间放一个指针作为分界点的指示器，分配内存的时候将指针向空闲区域移动空闲列表（Free List）虚拟机维护一个列表，记录那部分内存可用，那部分内存不可用，分配内存的时候找一块足够大的空间划分给对象实例本地线程缓存（Thread Local Allocation Buffer） 如果对象在虚拟中创建频繁，如何进行同步1.虚拟机采用CAS配上失败重试的方式保证更新操作的原子性2.把分配内存的操作按照线程进行划分不同的区域，每个线程在Java堆中先预先分配一小块内存称为本地线程缓存，当用完了TLAB，在进行同步锁定，可通过-XX:+/-useTLAB参数来设定 分配完内存后，虚拟机将分配到的内存初始化为零值（不包括对象头），这一步保证对象不进行初始化也可以使用 接下来，虚拟机要对对象头进行必要的设置，如 类的元数据信息，对象的哈希码，对象的GC分代年龄，是否启用偏向锁等 对象的内存布局对象在内存中的存储布局分为3中：1.对象头（Header）对象都存两部分一部分用于存储对象自身运行时数据，如哈希码（hashCode），GC分代年龄，锁状态标志，线程持有锁，偏向线程ID，偏向时间戳等这部分数据的长度在32位和64位虚拟机中大小分别为32和64.此区域会根据一些参数的启用来复用存储空间。另一部分是类型指针，通过指针可以确定对象是哪个实例，但并不是所有的虚拟机实现都必须在对象数据上保留类型指针2.实例数据（Instance Data）对象真正存储的有效信息，也就是各个字段的内容，包括父类的3.对其填充（Padding）没有特别的意义，仅仅起占位符的作用。HotSpotVM的自动管理内存系统要求对象的大小必须是8字节的整倍数 对象的访问定位1.句柄访问java堆划分出了一块内存作为句柄池，reference存储的是对象句柄池的地址，句柄池包含了对象实例数据（java堆）和类型数据（方法区）的地址2.直接指针reference存储的是对象的地址好处是速度快，Sun HotSpot 使用的是直接指针]]></content>
+      <categories>
+        <category>jvm</category>
+      </categories>
+      <tags>
+        <tag>jvm</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[2018/12/3要做的事情清单]]></title>
+    <url>%2F2018%2F12%2F03%2F2018-12-3%E8%A6%81%E5%81%9A%E7%9A%84%E4%BA%8B%E6%83%85%E6%B8%85%E5%8D%95%2F</url>
+    <content type="text"><![CDATA[9:00-11：30 工作11.30-12:00 吃饭12:00-13：30 中间学习10个英文单词或英文语句，休息Guard well your thoughts when alone and your words when accompanied.独处守住心，群处守住嘴guard 英 [gɑ:d] 美 [gɑ:rd]n.警卫;狱吏，看守;护卫队;防护装置vt.看守;保卫，守护;加防护装置;谨慎使用vi.警卫;警惕 accompaniedv.陪同;陪伴( accompany的过去式和过去分词 );伴随…同时发生;伴奏 Courage isn’t having the strength to go on.It’s going on when you don’t have strength.勇气不是有力气坚持下去，而是即使没有力气依然能够坚持。 courage英 [ˈkʌrɪdʒ] 美 [ˈkɜ:rɪdʒ]n.勇气;胆量;魄力;肝胆 strength英 [streŋθ] 美 [strɛŋkθ, strɛŋθ, strɛnθ]n.力量;优点，长处;（光、声、色等的）力度;人力[数] going on 发生; 接近，快到Direct Memory 直接内存NIO New Input/Outputchannel 通道buffer 缓冲区 13：30-17:00 工作17：00-19:00 一天总结，看java虚拟机这本书，并写一篇博客]]></content>
+      <categories>
+        <category>清单</category>
+      </categories>
+      <tags>
+        <tag>清单</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[java线程安全与锁优化]]></title>
     <url>%2F2018%2F11%2F30%2Fjava%E7%BA%BF%E7%A8%8B%E5%AE%89%E5%85%A8%E4%B8%8E%E9%94%81%E4%BC%98%E5%8C%96%2F</url>
     <content type="text"><![CDATA[线程安全的实现方法1.互斥同步互斥同步是是常见的一种并发正确性保障手段。同步是指在在多线程并发访问共享数据时，保证共享数据在同一时刻只被一个（或者是一些，使用信号量的时候）线程使用。互斥是实现同步的一种手段互斥的实现三种方式 临界区 互斥量 信号量 java 中最基本的互斥同步手段是使用synchronizedsynchronized被编译后，同步块前后会形成monitorenter和monitorexit这两个字节码指令，这两个指令都需要一个reference类型的参数来指定锁定和解锁的对象如果synchronized指定了对象参数，那就是这个对象的reference如果没有指定，根据修饰的是类方法还是实例方法类确定修饰的类方法：Class对象实例方法：对象实例 使用java.util.concurrent下的ReentrantLock（重入锁）ReentrantLock相对与synchronized的增强 等待可中断是指当持有锁的线程长时间不释放锁的时候，正在等待的线程可以选择放弃等待，去做其他的事情。 可实现公平锁是指多个线程在等待同一个锁的时候，必须按着申请锁的时间顺序依次获取锁。synchronized和ReentrantLock默认是非公平锁 锁可以绑定多个条件synchronized锁对象的wait(),notify(),notifyAll()方法可以实现一个隐含的条件。想要增加条件关联，必须增加锁。而ReentrantLock只需要new Condition()即可jdk1.5版本ReentrantLock的吞吐量是优于synchronized的jdk1.6做了优化，提倡在synchronized能实现的情况下，优先使用synchronized 2.非阻塞同步互斥同步主要是线程阻塞和唤醒所带来的性能问题，所有这种同步也成为阻塞同步从处理问题的方式来看，互斥同步属于一种悲观并发策略，总是认为只要不同步，就会出现问题另一种方式是基于冲突检测的乐观并发策略，假设没有冲突，先进行操作，如果没有其他线程争用共享数据，则操作成功，如果有，产生了冲突，采用补偿机制，最常用的补偿机制是(不断重试，直到成功为止)最常用的技术就是CAS（Compare-and—Swap）CAS有三个值V(内存地址)A(旧的预期值)B(新值)当且仅当V符合旧的预期值A时，处理器用新的B更新V的值，否则不会更新，但是无论是否更新，都会返回V的旧值。 CAS有个漏洞ABA问题，可通过为值加版本号来解决 3.无同步方案可重入代码如果一个方法，结果是可预测的，输入相同的数据，返回相同的结果，它就满足可重入性的要求，也就是线程安全的线程本地存储如果一个变量要被多线程访问，可以使用volatile关键字声明它为”易变的”如果一个变量要被某线程独享，可以使用ThreadLocal，使用线程池的时候一定要注意线程复用问题 锁优化1.自旋锁和自适应自旋2.锁消除3.锁粗化4.轻量级锁5.偏向锁]]></content>
