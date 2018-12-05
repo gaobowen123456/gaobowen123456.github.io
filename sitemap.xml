@@ -2,16 +2,51 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://yoursite.com/2018/12/04/k8s%E5%9F%B9%E8%AE%AD/</loc>
+    <loc>http://yoursite.com/2018/12/05/%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E5%92%8C%E5%9B%9E%E6%94%B6%E7%AD%96%E7%95%A5/</loc>
     
-    <lastmod>2018-12-04T03:13:26.310Z</lastmod>
+    <lastmod>2018-12-05T12:46:19.845Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://yoursite.com/2018/12/03/%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E4%B8%8E%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5/</loc>
     
-    <lastmod>2018-12-04T02:11:12.277Z</lastmod>
+    <lastmod>2018-12-05T12:15:32.594Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2018/12/05/%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/</loc>
+    
+    <lastmod>2018-12-05T12:10:02.179Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2018/12/05/%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E7%AE%97%E6%B3%95/</loc>
+    
+    <lastmod>2018-12-05T11:03:20.821Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2018/12/05/2018-12-5%E8%8B%B1%E6%96%87%E5%8D%95%E8%AF%8D%E5%AD%A6%E4%B9%A0/</loc>
+    
+    <lastmod>2018-12-05T06:27:03.416Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2018/12/05/github%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/</loc>
+    
+    <lastmod>2018-12-05T06:24:06.445Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2018/12/04/k8s%E5%9F%B9%E8%AE%AD/</loc>
+    
+    <lastmod>2018-12-04T03:13:26.310Z</lastmod>
     
   </url>
   

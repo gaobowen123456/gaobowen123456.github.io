@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-12-04T03:13:26.310Z</updated>
+  <updated>2018-12-05T12:46:19.845Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,133 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>内存分配和回收策略</title>
+    <link href="http://yoursite.com/2018/12/05/%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E5%92%8C%E5%9B%9E%E6%94%B6%E7%AD%96%E7%95%A5/"/>
+    <id>http://yoursite.com/2018/12/05/内存分配和回收策略/</id>
+    <published>2018-12-05T12:16:26.000Z</published>
+    <updated>2018-12-05T12:46:19.845Z</updated>
+    
+    <content type="html"><![CDATA[<p>前言：<br>自动管理内存最终解决两个问题，给对象分配内存以及回收分配给对象的内存<br>大方向来说：<br>对象在堆上分配，主要分配在新生代的Eden区上，如果启动了本地线程分配缓冲，将按照线程优先在TLAB上分配。<br>分配的规则不是百分之百固定。</p><h1 id="对象优先在Eden分配"><a href="#对象优先在Eden分配" class="headerlink" title="对象优先在Eden分配"></a>对象优先在Eden分配</h1><p>大多数情况下，对象在新生代Eden分配，当Eden没有足够的空间进行分配时，虚拟机将发起一次MinorGC、<br>新生代GC（Minor GC），老年代GC（Major GC / Full GC）,Full GC 会比MinorGC慢10倍。</p><h1 id="大对象直接进入老年代"><a href="#大对象直接进入老年代" class="headerlink" title="大对象直接进入老年代"></a>大对象直接进入老年代</h1><p>参数 -XX:PretenureSizeThreshold 参数，令大于这个设置值的对象直接进入老年代。<br>避免在Eden和两个Survivor之间大量的内存复制</p><h1 id="长期存活的对象进入老年代"><a href="#长期存活的对象进入老年代" class="headerlink" title="长期存活的对象进入老年代"></a>长期存活的对象进入老年代</h1><p>虚拟机给每个对象定义一个对象年龄（Age）计数器。<br>如果在Eden出生，并且经过第一次MinorGC 后仍然存活，并且在Survivor容纳的恶化，将被移到Survivor空间中，并且对象<br>年龄设为1，对象在Survivor区每熬过一次Minor GC，年龄就增加1，当年龄到15时（默认），晋升到老年代。<br>对象晋升老年代的年龄阈值参数为 -XX:MaxTenuringThreshold 来设置</p><h1 id="动态的年龄判定"><a href="#动态的年龄判定" class="headerlink" title="动态的年龄判定"></a>动态的年龄判定</h1><p>虚拟机并不是永远要求对象的年龄必须达到15才能晋升老年代，<br>如果Survivor空间相同年龄的对象大小总和大于Survivor的一半，<br>年龄大于或等于该年龄的对象直接进入老年代</p><h1 id="空间分配担保"><a href="#空间分配担保" class="headerlink" title="空间分配担保"></a>空间分配担保</h1><p>在发生Minor GC 之前，虚拟机会检查老年代最大可用的连续空间是否大于新生代所有对象的空间。<br>如果条件成立，Minor GC是安全的。<br>如果不成立，查看HandlepromotionFailure设置值是否允许担保失败<br>如果允许，那么检查老年代最大可用的连续空间是否大于历次晋升到老年代的平均大小，<br>如果大于，进行Minor GC，尽管是有风险的<br>如果小于或者HandlepromotionFailure不允许，改为进行Full GC</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;前言：&lt;br&gt;自动管理内存最终解决两个问题，给对象分配内存以及回收分配给对象的内存&lt;br&gt;大方向来说：&lt;br&gt;对象在堆上分配，主要分配在新生代的Eden区上，如果启动了本地线程分配缓冲，将按照线程优先在TLAB上分配。&lt;br&gt;分配的规则不是百分之百固定。&lt;/p&gt;
+&lt;h1 i
+      
+    
+    </summary>
+    
+      <category term="jvm" scheme="http://yoursite.com/categories/jvm/"/>
+    
+    
+      <category term="jvm" scheme="http://yoursite.com/tags/jvm/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>垃圾收集器</title>
+    <link href="http://yoursite.com/2018/12/05/%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8/"/>
+    <id>http://yoursite.com/2018/12/05/垃圾收集器/</id>
+    <published>2018-12-05T11:04:10.000Z</published>
+    <updated>2018-12-05T12:10:02.179Z</updated>
+    
+    <content type="html"><![CDATA[<p>前言：<br>垃圾收集算法是方法论，那么垃圾收集器就是具体的实现。<br>直到今天为止，还没有最好的收集器出现，更没有万能的收集器，我们选择的是对具体应用最合适的收集器。</p><h1 id="Serial收集器"><a href="#Serial收集器" class="headerlink" title="Serial收集器"></a>Serial收集器</h1><p>Serial收集器是最基本，发展历史最悠久的收集器<br>在jdk1.3之前，是新生代收集的唯一选择<br>它是一个单线程的收集器，不仅仅是使用一个cpu或者是一个线程<br>更重要的是它进行垃圾收集时，必须暂停其他所有的工作，直到它收集结束<br>“stop the world” 会带给用户不良的体验。所以从jdk1.3到jdk1.7，HotSpot虚拟机开发团队为了消除或者减少<br>工作线程因内存回收而导致停顿的努力一直进行。<br>从Serial到Parallel，再到Concurrent Mark Sweep（CMS）再到Garbage First（G1）<br>越来越优秀，也越来越复杂。用户线程的停顿时间不断在缩短，但是仍然没有办法完全消除<br>Serial收集器并不是老而无用<br>Serial收集器在Client模式先的虚拟机是一个很好的选择，它没有线程交互的开销，可以专心做垃圾收集</p><h1 id="ParNew收集器"><a href="#ParNew收集器" class="headerlink" title="ParNew收集器"></a>ParNew收集器</h1><p>ParNew收集器其实是Serial收集器的多线程版本。<br>它可以和CMS收集器配合工作<br>在单核CPU并不一定比Serial收集器好，随着CPU数量的增加，性能是好于Serial收集器的</p><h1 id="Parallel-Scavenge收集器"><a href="#Parallel-Scavenge收集器" class="headerlink" title="Parallel Scavenge收集器"></a>Parallel Scavenge收集器</h1><p>Parallel Scavenge收集器是一个新生代收集器，采用的复制算法，又是并行的多线程收集器<br>CMS收集器关注的是尽可能的缩短垃圾收集时用户线程的停顿时间。<br>Parallel Scavenge收集器的目标是达到一个可控的吞吐量（Throughput）<br>吞吐量就是CPU运行用户代码的时间/CPU总消耗时间的比值<br>即：吞吐量=运行用户代码时间/(运行用户代码时间+垃圾收集时间)<br>虚拟机总共运行100分钟，垃圾收集花掉1分钟，吞吐量就是99%<br>Parallel Scavenge收集器有一个自适应调节策略</p><h1 id="Serial-Old收集器"><a href="#Serial-Old收集器" class="headerlink" title="Serial Old收集器"></a>Serial Old收集器</h1><p>Serial Old收集器是Serial的老年代版本。<br>同样是单线程收集器<br>使用标记-整理算法<br>两大用途：<br>1：在JDK1.5之前，与Parallel Scavenge收集器搭配使用<br>2：作为CMS收集器的后备方案在并发收集发生 Concurrent Mode Failure时使用</p><h1 id="Parallel-Old收集器"><a href="#Parallel-Old收集器" class="headerlink" title="Parallel Old收集器"></a>Parallel Old收集器</h1><p>是Parallel Scavenge收集器老年代收集版本<br>多线程<br>标记——整理算法<br>jdk1.6提供，此之前Parallel Scavenge收集器一直处于尴尬位置</p><h1 id="CMS-收集器"><a href="#CMS-收集器" class="headerlink" title="CMS 收集器"></a>CMS 收集器</h1><p>CMS（Concurrent Mark Sweep）收集器是一种以获得最短回收停顿时间为目标的收集器<br>基于标记-清除算法实现<br>分为4步：<br>初始标记<br>并发标记<br>重新标记<br>并发清除</p><p>初始标记和重新标记仍需要”Stop the World”.<br>最消耗时间的并发标记和并发清除是可以和用户线程一起工作的。<br>CMS 是一款非常优秀的收集器，有点事并发收集和低停顿<br>缺点：<br>1.CMS收集器资源非常敏感<br>2.CMS收集器无法处理浮动垃圾<br>可能会出现Concurrent Mode Failure失败而导致另一次的Full GC.<br>由于CMS并发清理阶段用户线程还在运行，伴随着程序运行自然还会有新的垃圾不断产生，这部分垃圾<br>出现在标记过程之后，CMS无法再当次收集中处理掉他们，只好等到下一次GC时再清理掉，这部分垃圾就称为浮动垃圾<br>3.CMS是一款基于标记-清除的垃圾回收器。会产生大量空间碎片</p><h1 id="G1收集器"><a href="#G1收集器" class="headerlink" title="G1收集器"></a>G1收集器</h1><p>G1收集器是当今收集器技术发展的最前沿的成果之一。<br>G1是面向服务器端应用的垃圾收集器<br>特点：<br>1.并行与并发<br>2.分代收集<br>3.空间整合，与CMS不同，G1的实现是标记-整理算法<br>4.可预测停顿<br>G1将整个java堆划分为多个大小相等的独立区域（Region），虽然还保留新生代和老年代的概念但它们已经不是<br>物理隔离了，它们都是一部分Region（不需要连续）的集合。<br>G1运作的步骤<br>初始标记<br>并发标记<br>最终回收<br>筛选回收</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;前言：&lt;br&gt;垃圾收集算法是方法论，那么垃圾收集器就是具体的实现。&lt;br&gt;直到今天为止，还没有最好的收集器出现，更没有万能的收集器，我们选择的是对具体应用最合适的收集器。&lt;/p&gt;
+&lt;h1 id=&quot;Serial收集器&quot;&gt;&lt;a href=&quot;#Serial收集器&quot; class=&quot;
+      
+    
+    </summary>
+    
+      <category term="jvm" scheme="http://yoursite.com/categories/jvm/"/>
+    
+    
+      <category term="jvm" scheme="http://yoursite.com/tags/jvm/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>垃圾收集算法</title>
+    <link href="http://yoursite.com/2018/12/05/%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E7%AE%97%E6%B3%95/"/>
+    <id>http://yoursite.com/2018/12/05/垃圾收集算法/</id>
+    <published>2018-12-05T10:38:21.000Z</published>
+    <updated>2018-12-05T11:03:20.821Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="标记-清楚算法"><a href="#标记-清楚算法" class="headerlink" title="标记-清楚算法"></a>标记-清楚算法</h1><p>最基础的算法是”标记-清楚”（Mark-Sweep）算法。<br>该算法分为标记和清除两个阶段<br>1.标记出所有回收的对象<br>2.标记完成后回收被标记的对象<br>不足：<br>1.效率问题，标记和清除这两个过程效率都不高<br>2.空间问题，清除标记后会产生大量的不连续的内存碎片</p><h1 id="复制算法"><a href="#复制算法" class="headerlink" title="复制算法"></a>复制算法</h1><p>复制为解决效率问题，将可用内存分为容量大小相等的两块，每次只使用其中一块，当一块用完后，将<br>存活的对象复制到另一块上面，然后再把已使用的内存空间清掉。<br>每次对都对整个半区进行内存回收<br>内存分配时，移动堆顶指针，按顺序分配内存<br>实现简单，运行高效<br>代价：将原来的内存缩小的一半，大家有点高<br>目前的商业虚拟机在内存分配上做了优化，还回收新生代<br>分为了一块较大的Eden区，两块小的Survivor区，比例是8:1:1,当Survivor空间不够，有老年区分配担保</p><h1 id="标记——整理算法"><a href="#标记——整理算法" class="headerlink" title="标记——整理算法"></a>标记——整理算法</h1><p>复制算法在对象存活率比较高时，比较多的复制，会导致效率低下。老年带一般不采用复制算法。<br>标记整理的标记过程和标记清除的一样，但是回收对象的时候，将所有的存活的对象都移动到一段，然后直接清掉边界<br>以外的内存</p><h1 id="分代收集算法"><a href="#分代收集算法" class="headerlink" title="分代收集算法"></a>分代收集算法</h1><p>当前的商业虚拟机都采用的分代收集算法。<br>根据对象的存活周期不同，将内存划分为几块。<br>一般将java划分为新生代和老年代<br>新生代用的是复制算法，老年代用的标记-清楚或者标记-整理算法</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;标记-清楚算法&quot;&gt;&lt;a href=&quot;#标记-清楚算法&quot; class=&quot;headerlink&quot; title=&quot;标记-清楚算法&quot;&gt;&lt;/a&gt;标记-清楚算法&lt;/h1&gt;&lt;p&gt;最基础的算法是”标记-清楚”（Mark-Sweep）算法。&lt;br&gt;该算法分为标记和清除两个阶段&lt;br
+      
+    
+    </summary>
+    
+      <category term="jvm" scheme="http://yoursite.com/categories/jvm/"/>
+    
+    
+      <category term="jvm" scheme="http://yoursite.com/tags/jvm/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>github使用指南</title>
+    <link href="http://yoursite.com/2018/12/05/github%E4%BD%BF%E7%94%A8%E6%8C%87%E5%8D%97/"/>
+    <id>http://yoursite.com/2018/12/05/github使用指南/</id>
+    <published>2018-12-05T03:02:12.000Z</published>
+    <updated>2018-12-05T06:24:06.445Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h1><p>创建一个hello world工程在计算机编程中是一个悠久的历史传统。这是一个简单的练习，让你开始学习新的东西。让我们开始使用github吧！<br>你将学会什么：<br>创建和使用GitHub仓库<br>启动和管理一个新的分支<br>对文件进行更改，提交并且推送到github<br>打开并合并一个请求</p><h1 id="github是什么？"><a href="#github是什么？" class="headerlink" title="github是什么？"></a>github是什么？</h1><p>github是用于版本控制和协作的代码托管平台。它可以让你和其他人一起从任何地方参与项目。<br>本教程教您GitHub的基本知识，如存储库、分支、提交和拉请求。您将创建自己的Hello World存储库，并学习GitHub的Pull Request工作流，这是一种创建和审查代码的流行方法。</p><h3 id="本教程不需要编程"><a href="#本教程不需要编程" class="headerlink" title="本教程不需要编程"></a>本教程不需要编程</h3><p>完成本教程，你需要一github.com帐户和互联网接入。你不需要知道如何编码，使用命令行，或安装Git的版本控制软件是一个内置的GitHub上）。<br><strong>提示：在单独的浏览器窗口（或选项卡）中打开这个指南，这样在完成本教程中的步骤时可以看到它。</strong></p><h1 id="第一步：创建存储库"><a href="#第一步：创建存储库" class="headerlink" title="第一步：创建存储库"></a>第一步：创建存储库</h1><p>存储库通常用于组织单个项目。存储库可以包含文件夹和文件、图像、视频、电子表格和数据集——项目需要的任何内容。我们建议包括一个自述文件，或者一个包含您项目的信息的文件。GITHUB使您在创建新的存储库的同时添加以上信息是一件简单的事情。它还提供其他常见选项，如许可证文件。<br>您的hello-world存储库可以是存储好的想法、资源、甚至与其他人共享和讨论事情的地方。</p><h2 id="创建一个新的存储库"><a href="#创建一个新的存储库" class="headerlink" title="创建一个新的存储库"></a>创建一个新的存储库</h2><p>1.点击右上角的+号，选择New repository.<br>2.仓库的名字叫做hello-world<br>3.填写项目简介<br>4.选择初始仓库的时候是否生成 README文件<br>点击Create repository. </p><h1 id="第二步：创建一个分支"><a href="#第二步：创建一个分支" class="headerlink" title="第二步：创建一个分支"></a>第二步：创建一个分支</h1><p>分支可以在同一个库不同版本之间工作。<br>未完成。。。。</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;简介&quot;&gt;&lt;a href=&quot;#简介&quot; class=&quot;headerlink&quot; title=&quot;简介&quot;&gt;&lt;/a&gt;简介&lt;/h1&gt;&lt;p&gt;创建一个hello world工程在计算机编程中是一个悠久的历史传统。这是一个简单的练习，让你开始学习新的东西。让我们开始使用github吧
+      
+    
+    </summary>
+    
+      <category term="github" scheme="http://yoursite.com/categories/github/"/>
+    
+    
+      <category term="github" scheme="http://yoursite.com/tags/github/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>2018/12/5英文单词学习</title>
+    <link href="http://yoursite.com/2018/12/05/2018-12-5%E8%8B%B1%E6%96%87%E5%8D%95%E8%AF%8D%E5%AD%A6%E4%B9%A0/"/>
+    <id>http://yoursite.com/2018/12/05/2018-12-5英文单词学习/</id>
+    <published>2018-12-05T02:41:18.000Z</published>
+    <updated>2018-12-05T06:27:03.416Z</updated>
+    
+    <content type="html"><![CDATA[<p><strong>verify</strong><br>美[ˈvɛrəˌfaɪ] 英[ˈverɪfaɪ]<br>vt.    核实; 证明; 判定;<br>[例句]I verified the source from which I had that information<br>我核实了我所获消息的来源。<br>[其他]    第三人称单数：verifies 现在分词：verifying 过去式：verified 过去分词：verified</p><p>How would you describe your level of programming experience?<br>如何描述你的编程水平？<br>Very experienced 非常有经验<br>Somewhat experienced 有点经验<br>Totally new to programming 新手<br><strong>hobbyist</strong><br>英 [ˈhɒbiɪst]   美 [ˈhɑ:biɪst]<br>n.<br>沉溺于某种癖好者，嗜某爱好成癖的人</p><p>profile<br>英 [ˈprəʊfaɪl]   美 [ˈproʊfaɪl]<br>n.<br>侧面，半面;外形，轮廓;[航]翼型;人物简介<br>vt.<br>描…的轮廓;给…画侧面图;为（某人）写传略;[机]铣出…的轮廓</p><p>your profile 你的简介</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;&lt;strong&gt;verify&lt;/strong&gt;&lt;br&gt;美[ˈvɛrəˌfaɪ] 英[ˈverɪfaɪ]&lt;br&gt;vt.    核实; 证明; 判定;&lt;br&gt;[例句]I verified the source from which I had that information&lt;
+      
+    
+    </summary>
+    
+      <category term="英文" scheme="http://yoursite.com/categories/%E8%8B%B1%E6%96%87/"/>
+    
+    
+      <category term="英文" scheme="http://yoursite.com/tags/%E8%8B%B1%E6%96%87/"/>
+    
+  </entry>
   
   <entry>
     <title>k8s培训</title>
@@ -43,11 +170,11 @@
   </entry>
   
   <entry>
-    <title>垃圾收集器与内存分配策略</title>
+    <title>对象已死？</title>
     <link href="http://yoursite.com/2018/12/03/%E5%9E%83%E5%9C%BE%E6%94%B6%E9%9B%86%E5%99%A8%E4%B8%8E%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E7%AD%96%E7%95%A5/"/>
     <id>http://yoursite.com/2018/12/03/垃圾收集器与内存分配策略/</id>
     <published>2018-12-03T12:06:00.000Z</published>
-    <updated>2018-12-04T02:11:12.277Z</updated>
+    <updated>2018-12-05T12:15:32.594Z</updated>
     
     <content type="html"><![CDATA[<h1 id="引用计数算法"><a href="#引用计数算法" class="headerlink" title="引用计数算法"></a>引用计数算法</h1><p>给对象添加一个引用计数器，每当一个地方引用的时候，计数器加1，引用失效，计数器减1，任何时刻，计数器为0，<br>则则对象不可能在被使用。<br>此算法的问题：难以解决相互引用问题。<br>objA有一个属性引用了objB,objB有一个属性引用了objA，如果外界没有objA和objB的引用，则这两个对象就应该被回收。</p><h1 id="可达性分析算法"><a href="#可达性分析算法" class="headerlink" title="可达性分析算法"></a>可达性分析算法</h1><p>基本思路是通过一系列的称为”GC Roots”的对象作为起始点，从这些节点开始往下搜索，搜索走过的路径称为引用链（Reference Chain），<br>当一个对象到GC Roots没有任何引用链相连（称GC Roots 到这个对象不可达）时，则证明此对象不可用，可回收。<br>java中，可作为GC Roots的对象包括以下几种：<br>1.虚拟机栈（栈帧中的本地变量表）中引用的对象<br>2.方法区中静态属性引用的对象<br>3.方法区中常量引用的对象<br>4.本地方法栈中JNI引用的对象</p><h1 id="再谈引用"><a href="#再谈引用" class="headerlink" title="再谈引用"></a>再谈引用</h1><p>JDK1.2以前，java的引用定义：<br>如果reference类型的数据中存储的数据代表的是另一块数据内存的起始地址，就称为这块内存代表着一个引用。</p><p>JDK1.2之后，java对引用进行了扩充，强引用（Strong Reference）,软引用（Soft Reference），弱引用（Weak Reference），虚引用（Phantom Reference）4种，这4种强度依次减弱。</p><h3 id="强引用"><a href="#强引用" class="headerlink" title="强引用"></a>强引用</h3><p>强引用普遍存在，类似Object obj=new Object(),只要强引用还存在，垃圾回收器永远不会回收掉引用的对象。</p><h3 id="软引用"><a href="#软引用" class="headerlink" title="软引用"></a>软引用</h3><p>描述一些还有用带不是必须的对象。在系统将要发生内存溢出异常之前，将会把这些对象列进回收范围之中进行二次回收。<br>如果还没有足够的内存，再抛出异常。JDK1.2之后，提供了SoftReference类来实现软引用</p><h3 id="弱引用"><a href="#弱引用" class="headerlink" title="弱引用"></a>弱引用</h3><p>弱引用也是用来描述非必须对象的，它比软引用更弱一些，被弱引用引用的对象只能生存到下次垃圾收集之前。当垃圾收集器工作时，<br>无论当前内存是否足够，都会回收掉直被弱引用关联的对象。JDK1.2之后，通过WeakReference类来实现弱引用。</p><h3 id="虚引用"><a href="#虚引用" class="headerlink" title="虚引用"></a>虚引用</h3><p>虚引用称为幽灵引用或者幻影引用。它是最弱的一种引用关系。一个对象是否有虚引用的存在，完全不会对其生存时间构成影响。<br>也不能通过虚引用来取得一个对象实例。唯一的目的是对象被回收的时候可以收到一个系统通知。<br>JDK1.2以后通过PhantomReference来实现虚引用</p><h1 id="生存还是死亡"><a href="#生存还是死亡" class="headerlink" title="生存还是死亡"></a>生存还是死亡</h1><p>在可达性分析算法中不可达的对象，必须经历两次标记的过程才会被回收。<br>对象进行可达性分析后发现不可达，那它会被第一次标记并且进行一次筛选，筛选的条件是此对象是否有必要执行finalize()方法。<br>当对象没有覆盖finalize()方法或finalize()已经被虚拟机调用过，虚拟机将这两种情况视为”没必要执行”。<br>如果对象被判定为有必要执行finalize(),则将会将该对象放入一个队列。单独起一个线程调用队列中的finalize()方法。</p>]]></content>
     
@@ -385,121 +512,6 @@
     
     
       <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Hello World</title>
-    <link href="http://yoursite.com/2018/11/08/hello-world/"/>
-    <id>http://yoursite.com/2018/11/08/hello-world/</id>
-    <published>2018-11-08T11:05:57.914Z</published>
-    <updated>2018-11-20T16:08:39.598Z</updated>
-    
-    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;Welcome to &lt;a href=&quot;https://hexo.io/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Hexo&lt;/a&gt;! This is your very first post. Check &lt;a href=&quot;https://hexo.
-      
-    
-    </summary>
-    
-      <category term="hello" scheme="http://yoursite.com/categories/hello/"/>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>2018年1月3日-学习日志</title>
-    <link href="http://yoursite.com/2018/01/03/2018%E5%B9%B41%E6%9C%883%E6%97%A5-%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97/"/>
-    <id>http://yoursite.com/2018/01/03/2018年1月3日-学习日志/</id>
-    <published>2018-01-03T11:56:27.000Z</published>
-    <updated>2018-11-21T12:49:53.697Z</updated>
-    
-    <content type="html"><![CDATA[<p>余尝曰：读《金瓶梅》而生怜悯心者，菩萨也；生畏惧心者，君子也；生欢喜心者，小人也；生效法心者，乃禽兽耳。</p><h1 id="Sql优化之in与join的爱恨情仇"><a href="#Sql优化之in与join的爱恨情仇" class="headerlink" title="Sql优化之in与join的爱恨情仇"></a>Sql优化之in与join的爱恨情仇</h1><p>流程设计相关流程查询原sql:<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> <span class="string">`icop-bpm`</span>.<span class="string">`act_re_model`</span> m <span class="keyword">WHERE</span> m.deployment_id_ <span class="keyword">IN</span> (<span class="keyword">SELECT</span> p.deployment_id_ <span class="keyword">FROM</span> act_re_procdef p <span class="keyword">WHERE</span> p.key_ <span class="keyword">IN</span>(</span><br><span class="line"> <span class="keyword">SELECT</span> c.<span class="string">`prodefkey`</span> <span class="keyword">FROM</span> <span class="string">`bpm_billconfig`</span> c <span class="keyword">WHERE</span> c.<span class="string">`orgid`</span> <span class="keyword">IN</span> (<span class="string">'first0001company'</span>) <span class="keyword">AND</span> c.<span class="string">`iscontainsub`</span>=<span class="number">1</span> </span><br><span class="line"> <span class="keyword">UNION</span></span><br><span class="line"> <span class="keyword">SELECT</span> c.<span class="string">`prodefkey`</span> <span class="keyword">FROM</span> <span class="string">`bpm_billconfig`</span> c  <span class="keyword">INNER</span> <span class="keyword">JOIN</span> <span class="string">`bpm_billconfig_org`</span> g <span class="keyword">ON</span> g.<span class="string">`configid`</span> = c.<span class="string">`id`</span> <span class="keyword">AND</span> g.<span class="string">`orgid`</span> =<span class="string">'8a83898e56f96bc6015703ab3032002b'</span> <span class="keyword">WHERE</span> c.<span class="string">`orgid`</span> <span class="keyword">IN</span> (<span class="string">'first0001company'</span>) <span class="keyword">AND</span> (c.<span class="string">`iscontainsub`</span>  <span class="keyword">IS</span>  <span class="literal">NULL</span> <span class="keyword">OR</span> c.<span class="string">`iscontainsub`</span>=<span class="number">0</span>))) </span><br><span class="line"> <span class="keyword">AND</span> name_ <span class="keyword">LIKE</span> <span class="string">'%%'</span> <span class="keyword">ORDER</span> <span class="keyword">BY</span> <span class="keyword">CONVERT</span>( name_ <span class="keyword">USING</span> GBK);</span><br></pre></td></tr></table></figure></p><p>耗时:2.365sec<br>优化后sql:<br><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> * <span class="keyword">FROM</span> <span class="string">`icop-bpm`</span>.<span class="string">`act_re_model`</span> m <span class="keyword">WHERE</span> m.deployment_id_ <span class="keyword">IN</span>(</span><br><span class="line"> <span class="keyword">SELECT</span> p.deployment_id_ <span class="keyword">FROM</span> act_re_procdef p <span class="keyword">INNER</span> <span class="keyword">JOIN</span> (<span class="keyword">SELECT</span> c.<span class="string">`prodefkey`</span> <span class="keyword">AS</span> prodefkey <span class="keyword">FROM</span> <span class="string">`bpm_billconfig`</span> c <span class="keyword">WHERE</span> c.<span class="string">`orgid`</span> <span class="keyword">IN</span> (<span class="string">'first0001company'</span>) <span class="keyword">AND</span> c.<span class="string">`iscontainsub`</span>=<span class="number">1</span> </span><br><span class="line"> <span class="keyword">UNION</span></span><br><span class="line"> <span class="keyword">SELECT</span> c.<span class="string">`prodefkey`</span> <span class="keyword">AS</span>  prodefkey <span class="keyword">FROM</span> <span class="string">`bpm_billconfig`</span> c  <span class="keyword">INNER</span> <span class="keyword">JOIN</span> <span class="string">`bpm_billconfig_org`</span> g <span class="keyword">ON</span> g.<span class="string">`configid`</span> = c.<span class="string">`id`</span> <span class="keyword">AND</span> g.<span class="string">`orgid`</span> =<span class="string">'8a83898e56f96bc6015703ab3032002b'</span> <span class="keyword">WHERE</span> c.<span class="string">`orgid`</span> <span class="keyword">IN</span> (<span class="string">'first0001company'</span>) <span class="keyword">AND</span> (c.<span class="string">`iscontainsub`</span>  <span class="keyword">IS</span>  <span class="literal">NULL</span> <span class="keyword">OR</span> c.<span class="string">`iscontainsub`</span>=<span class="number">0</span>)) g <span class="keyword">ON</span> g.prodefkey=p.<span class="string">`KEY_`</span>) <span class="keyword">AND</span> name_ <span class="keyword">LIKE</span> <span class="string">'%%'</span> <span class="keyword">ORDER</span> <span class="keyword">BY</span> <span class="keyword">CONVERT</span>( name_ <span class="keyword">USING</span> GBK);</span><br></pre></td></tr></table></figure></p><p>耗时:0.045sec<br>总结:<strong>将流程部署表根据key的in查询修改为inner join 查询.</strong></p><h1 id="java时间转换成毫秒值"><a href="#java时间转换成毫秒值" class="headerlink" title="java时间转换成毫秒值"></a>java时间转换成毫秒值</h1><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">private</span> SimpleDateFormat dateformat;</span><br><span class="line"><span class="keyword">private</span> <span class="keyword">long</span> time;</span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">long</span> <span class="title">getMills</span><span class="params">()</span></span>&#123;</span><br><span class="line">    dateformat = <span class="keyword">new</span> SimpleDateFormat(<span class="string">"yyyy-MM-dd HH:mm:ss"</span>); <span class="comment">//时间格式</span></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">        time = dateformat.parse(<span class="string">"1971-01-01 00:00:00"</span>).getTime();<span class="comment">//格式转换</span></span><br><span class="line">        System.out.println(time);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (java.text.ParseException e) &#123;</span><br><span class="line">        e.printStackTrace();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> time;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><h1 id="Js-Date-对象原型添加格式化"><a href="#Js-Date-对象原型添加格式化" class="headerlink" title="Js Date 对象原型添加格式化"></a>Js Date 对象原型添加格式化</h1><p>// 对Date的扩展，将 Date 转化为指定格式的String<br>// 月(M)、日(d)、小时(h)、分(m)、秒(s)、季度(q) 可以用 1-2 个占位符，<br>// 年(y)可以用 1-4 个占位符，毫秒(S)只能用 1 个占位符(是 1-3 位的数字)<br>// 例子：<br>// (new Date()).Format(“yyyy-MM-dd hh:mm:ss.S”) ==&gt; 2006-07-02 08:09:04.423<br>// (new Date()).Format(“yyyy-M-d h:m:s.S”)      ==&gt; 2006-7-2 8:9:4.18<br><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">Date</span>.prototype.Format = <span class="function"><span class="keyword">function</span> (<span class="params">fmt</span>) </span>&#123; <span class="comment">//author: nature</span></span><br><span class="line">    <span class="keyword">var</span> o = &#123;</span><br><span class="line">        <span class="string">"M+"</span>: <span class="keyword">this</span>.getMonth() + <span class="number">1</span>, <span class="comment">//月份 </span></span><br><span class="line">        <span class="string">"d+"</span>: <span class="keyword">this</span>.getDate(), <span class="comment">//日 </span></span><br><span class="line">        <span class="string">"h+"</span>: <span class="keyword">this</span>.getHours(), <span class="comment">//小时 </span></span><br><span class="line">        <span class="string">"m+"</span>: <span class="keyword">this</span>.getMinutes(), <span class="comment">//分 </span></span><br><span class="line">        <span class="string">"s+"</span>: <span class="keyword">this</span>.getSeconds(), <span class="comment">//秒 </span></span><br><span class="line">        <span class="string">"q+"</span>: <span class="built_in">Math</span>.floor((<span class="keyword">this</span>.getMonth() + <span class="number">3</span>) / <span class="number">3</span>), <span class="comment">//季度 </span></span><br><span class="line">        <span class="string">"S"</span>: <span class="keyword">this</span>.getMilliseconds() <span class="comment">//毫秒 </span></span><br><span class="line">    &#125;;</span><br><span class="line">    <span class="keyword">if</span> (<span class="regexp">/(y+)/</span>.test(fmt)) fmt = fmt.replace(<span class="built_in">RegExp</span>.$<span class="number">1</span>, (<span class="keyword">this</span>.getFullYear() + <span class="string">""</span>).substr(<span class="number">4</span> - <span class="built_in">RegExp</span>.$<span class="number">1.</span>length));</span><br><span class="line">    <span class="keyword">for</span> (<span class="keyword">var</span> k <span class="keyword">in</span> o)</span><br><span class="line">    <span class="keyword">if</span> (<span class="keyword">new</span> <span class="built_in">RegExp</span>(<span class="string">"("</span> + k + <span class="string">")"</span>).test(fmt)) fmt = fmt.replace(<span class="built_in">RegExp</span>.$<span class="number">1</span>, (<span class="built_in">RegExp</span>.$<span class="number">1.</span>length == <span class="number">1</span>) ? (o[k]) : ((<span class="string">"00"</span> + o[k]).substr((<span class="string">""</span> + o[k]).length)));</span><br><span class="line">    <span class="keyword">return</span> fmt;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p><h1 id="Springmvc-PathVariable-注解用法"><a href="#Springmvc-PathVariable-注解用法" class="headerlink" title="Springmvc @PathVariable()注解用法"></a>Springmvc @PathVariable()注解用法</h1><p>通过@ PathVariable注解获取的参数如果有小数点，会自动过滤掉小数点和小数点后面的字符，两种方法可以解决，<br>第一种：<br>1、问题<br>SpringMVC项目中通过下面的ＵＲＬ进行GET请求。当version有多个小数点的时候。如version为1.0.1008。后台通过@PathVariable来获取version等于1.0。会丢失部分数据。<br>URL:<br><a href="http://host_ip/consumer/appVersion/phone/android/download/{version}" target="_blank" rel="noopener">http://host_ip/consumer/appVersion/phone/android/download/{version}</a><br>Controller:<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(value=<span class="string">"android/download/&#123;version&#125;"</span>,method=RequestMethod.GET)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">download</span><span class="params">(HttpSession session,HttpServletResponse response,@PathVariable(<span class="string">"version"</span>)</span>String version)</span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p><p>2、解决方案<br>在version段后增加一个静态的字符段，这个段没有任何意义，可以为任意字符。<br>URL:<br><a href="http://host_ip/consumer/appVersion/phone/android/download/{version}/static_str" target="_blank" rel="noopener">http://host_ip/consumer/appVersion/phone/android/download/{version}/static_str</a><br>问题虽然解决了，但毕竟URL后多了个小尾巴，心情不愉悦。<br>再次谷哥。<br>参考：<br><a href="http://stackoverflow.com/questions/3526523/spring-mvc-pathvariable-getting-truncated" target="_blank" rel="noopener">http://stackoverflow.com/questions/3526523/spring-mvc-pathvariable-getting-truncated</a><br>URL不加小尾巴。<br>在@RequestMapping的value中使用SpEL来表示，value中的{version}换成{version:.+}。<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@RequestMapping</span>(value=<span class="string">"android/download/&#123;version:.+&#125;"</span>,method=RequestMethod.GET)</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">download</span><span class="params">(HttpSession session,HttpServletResponse response,@PathVariable(<span class="string">"version"</span>)</span>String version)</span>&#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p><h1 id="Mysql在windows上的安装"><a href="#Mysql在windows上的安装" class="headerlink" title="Mysql在windows上的安装"></a>Mysql在windows上的安装</h1><p>Mysql windows上的安装分为两种：<br>第一种是msi安装，该安装时直接下一步就行，如果以前安装过，在安装过程出现问题，记得删除注册表。<br>第二种是免安装的，解压压缩文件包，但是需对my.ini文件进行配置，basedir和datadir是必须的，<br>（1）    以管理员身份运行cmd，进入到bin目录下<br>（2）    复制一个my-default.ini,名称为my.ini,配置basedir路径和datadir路径<br>（3）    安装：执行 mysqld install, 正确的提示语为Service successfully installed.<br>（4）    启动：net start mysql  启动成功：MySQL 服务已经启动成功。</p><h1 id="Npm命令npm-install-报错"><a href="#Npm命令npm-install-报错" class="headerlink" title="Npm命令npm install 报错"></a>Npm命令npm install 报错</h1><p>今天遇到一个问题，在npm install 的时候报错，我以为是远程库的问题，换了淘宝镜像之后还是不行<br>最后在该路径下打印报错信息：<br>D:\Program Files\nodejs\node_modules\npm\node_modules\pacote\node_modules\make-fetch-happen\node_modules\node-fetch-npm\node_modules\json-parse-better-errors<br>Index.js文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">try &#123;</span><br><span class="line">    return JSON.parse(txt, reviver)</span><br><span class="line">  &#125; catch (e) &#123;</span><br><span class="line">console.log(&quot;error message：&quot;+txt);</span><br></pre></td></tr></table></figure></p><p>后来发现是缓存的问题：<br>执行给命令：清理缓存<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm cache clean –force</span><br></pre></td></tr></table></figure></p><p>然后在 npm install</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;余尝曰：读《金瓶梅》而生怜悯心者，菩萨也；生畏惧心者，君子也；生欢喜心者，小人也；生效法心者，乃禽兽耳。&lt;/p&gt;
-&lt;h1 id=&quot;Sql优化之in与join的爱恨情仇&quot;&gt;&lt;a href=&quot;#Sql优化之in与join的爱恨情仇&quot; class=&quot;headerlink&quot; tit
-      
-    
-    </summary>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>2017年12月28日-学习日志</title>
-    <link href="http://yoursite.com/2017/12/28/2017%E5%B9%B412%E6%9C%8828%E6%97%A5-%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97/"/>
-    <id>http://yoursite.com/2017/12/28/2017年12月28日-学习日志/</id>
-    <published>2017-12-28T12:59:03.000Z</published>
-    <updated>2018-11-21T13:08:26.468Z</updated>
-    
-    <content type="html"><![CDATA[<p>时间是不会等待的，无论发生什么事，它都会一如既往的向前走。</p><h1 id="如何配置SLF4J不同的日志实现"><a href="#如何配置SLF4J不同的日志实现" class="headerlink" title="如何配置SLF4J不同的日志实现"></a>如何配置SLF4J不同的日志实现</h1><p>最近使用在学习shiro，在网上找了一个demo，在test的时候总是报错<br>但是test是通过的<br><strong>百度知道上看到一篇很好的回答</strong>：<br>使用slf4j库作为你的Java应用日志API层有很多好处，这里我会展示一小部分关于如何使用和配置它的例子。<br>你可以把slf4j想成一个Java的接口，然后你需要实现这个接口，从而在运行时提供实际的日志记录，例如把日志写到控制台(STDOUT)或者一个文件上等等。每种实现（或成为绑定）都显而易见地有他们自己的方式来配置日志的输出，但是你的应用对实现者并无感知并且一直使用相同的org.slf4j.Logger API。让我们看看如何在实际中使用它。<br>使用slf4j做简单的日志记录<br>创建基于Maven的工程，在pom.xml中添加如下内容<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">  &lt;groupId&gt;org.slf4j&lt;/groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;slf4j-api&lt;/artifactId&gt;</span><br><span class="line">  &lt;version&gt;1.7.5&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></p><p>现在你可以在你的Java代码中这样使用Logger<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">package deng;</span><br><span class="line"></span><br><span class="line">import org.slf4j.*;</span><br><span class="line"></span><br><span class="line">public class Hello &#123;</span><br><span class="line">    static Logger LOGGER = LoggerFactory.getLogger(Hello.class);</span><br><span class="line">    public static void main(String[] args) &#123;</span><br><span class="line">        for (int i = 0; i &lt; 10; i++)</span><br><span class="line">            if (i % 2 == 0)</span><br><span class="line">                LOGGER.info(&quot;Hello &#123;&#125;&quot;, i);</span><br><span class="line">            else</span><br><span class="line">                LOGGER.debug(&quot;I am on index &#123;&#125;&quot;, i);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p><p>以上代码可以编译通过，但是当你运行它时，你会看到这样的输出<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">bash&gt; java deng.Hello</span><br><span class="line">SLF4J: Failed to load class &quot;org.slf4j.impl.StaticLoggerBinder&quot;.</span><br><span class="line">SLF4J: Defaulting to no-operation (NOP) logger implementation</span><br><span class="line">SLF4J: See http://www.slf4j.org/codes.html#StaticLoggerBinder for further details.</span><br></pre></td></tr></table></figure></p><p>上面的意思是，在运行时，你没有做日志的实现（或者说日志的绑定），所以slf4j简简单单的使用了一个什么也不会做的空实现。<br>为了看到正确的输出，你应该尝试使用一个简单（simple）的实现，这个实现根本不需要任何配置！只要回到pom.xml然后添加如下配置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.slf4j&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;slf4j-simple&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;1.7.5&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></p><p>现在你可以在控制台(STDOUT)看见INFO级别的日志输出了。这个简单的logger会默认显示任何INFO或者更高级别的信息。想要看DEBUG级别的信息，你需要在Java启动时传入这个系统属性(system property)<br>-Dorg.slf4j.simpleLogger.defaultLogLevel=DEBUG<br>使用slf4j与Log4j日志<br>现在我们可以试验并更换不同的日志实现，但你的程序代码可以保持不变。<br>我们要做的是用另一个流行的日志实现来替换掉slf4j-simple，比如Log4j。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">  &lt;groupId&gt;org.slf4j&lt;/groupId&gt;</span><br><span class="line">  &lt;artifactId&gt;slf4j-log4j12&lt;/artifactId&gt;</span><br><span class="line">  &lt;version&gt;1.7.5&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></p><p>又一次，我们必须对我们选的每一个日志实现做配置。在这个例子中，我们需要一个文件src/main/resources/log4j.properties。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">log4j.rootLogger=DEBUG, STDOUT</span><br><span class="line">log4j.logger.deng=INFO</span><br><span class="line">log4j.appender.STDOUT=org.apache.log4j.ConsoleAppender</span><br><span class="line">log4j.appender.STDOUT.layout=org.apache.log4j.PatternLayout</span><br><span class="line">log4j.appender.STDOUT.layout.ConversionPattern=%5p [%t] (%F:%L) - %m%n</span><br></pre></td></tr></table></figure></p><p>重运行你的程序，你会看到同样的输出结果。<br>使用slf4j和JDK日志<br>JDK实际上带有一个日志包，你可以在pom.xml中替换为另一个日志实现。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;org.slf4j&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;slf4j-jdk14&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;1.7.5&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></p><p>现在JDK日志的配置起来有一点困难。这里不仅需要一个配置文件src/main/resources/logging.properties，你还需要添加一个系统属性<br>-Djava.util.logging.config.file=logging.properties<br>这是一个logging.properties的示例<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">level=INFO</span><br><span class="line">handlers=java.util.logging.ConsoleHandler</span><br><span class="line">java.util.logging.ConsoleHandler.level=FINEST</span><br><span class="line">deng.level=FINEST</span><br></pre></td></tr></table></figure></p><p>使用slf4j和Logback日志<br>Logback日志实现是一个高质量的实现。如果你想在项目中写认真的代码，你会想要考虑这中方式。还是修改你的pom.xml文件，替换成这样<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;dependency&gt;</span><br><span class="line">    &lt;groupId&gt;ch.qos.logback&lt;/groupId&gt;</span><br><span class="line">    &lt;artifactId&gt;logback-classic&lt;/artifactId&gt;</span><br><span class="line">    &lt;version&gt;1.0.13&lt;/version&gt;</span><br><span class="line">&lt;/dependency&gt;</span><br></pre></td></tr></table></figure></p><p>这是一个简单的配置src/main/resources/logback.xml<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;configuration&gt;</span><br><span class="line">    &lt;appender name=&quot;STDOUT&quot; class=&quot;ch.qos.logback.core.ConsoleAppender&quot;&gt;</span><br><span class="line">        &lt;encoder&gt;</span><br><span class="line">            &lt;pattern&gt;%d&#123;HH:mm:ss.SSS&#125; [%thread] %-5level %logger&#123;36&#125; - %msg%n&lt;/pattern&gt;</span><br><span class="line">        &lt;/encoder&gt;</span><br><span class="line">    &lt;/appender&gt;</span><br><span class="line"></span><br><span class="line">    &lt;logger name=&quot;deng&quot; level=&quot;DEBUG&quot;/&gt;</span><br><span class="line"></span><br><span class="line">    &lt;root level=&quot;INFO&quot;&gt;</span><br><span class="line">        &lt;appender-ref ref=&quot;STDOUT&quot; /&gt;</span><br><span class="line">    &lt;/root&gt;</span><br><span class="line">&lt;/configuration&gt;</span><br></pre></td></tr></table></figure></p><p>用slf4j写你自己的日志库<br>如果你正在很多终端用户(END USER)提供Java库，那么让你的项目仅依赖slf4j-api绝对是个好想法，然后让你的用户在他们开发和运营环境中选择任意的日志实现。作为终端用户，他们可以快速地从上面提到的日志库中选择一个，并且从他们自己喜欢的日志实现的特性中受益。<br>slf4j log4j logback之间的关系，哪个更好些<br>SLF4J(The Simple Logging Facade for Java)<br>官方文档是这样说明的</p><p>The Simple Logging Facade for Java (SLF4J) serves as a simple facade or abstraction for various logging frameworks, such as java.util.logging, logback and log4j. SLF4J allows the end-user to plug in the desired logging framework at deployment time. Note that SLF4J-enabling your library/application implies the addition of only a single mandatory dependency, namely slf4j-api-1.7.22.jar.</p><p>简答的讲就是slf4j是一系列的日志接口，而log4j logback是具体实现了的日志框架。</p><p>因为是接口，所以在项目中如果你不引用log4j 、logback或者其它日志框架你会发现，控制台的输出是这样的</p><p>从运行结果可以看到，由于没有给出具体的logger实现，无法在控制台输出日志。也就是说我们在具体开发中，需要绑定一个日志框架，才能正常的使用slf4j。</p><p>log4j和logback呢<br>而log4j和logback就是两个受欢迎的日志框架。但两者又有不同。<br>•    log4j是apache实现的一个开源日志组件。（Wrapped implementations）<br>•    logback同样是由log4j的作者设计完成的，拥有更好的特性，用来取代log4j的一个日志框架。是slf4j的原生实现。（Native implementations）</p><p>接下来一起看一下应用程序对日志框架的调用关系，看下图</p><p>可以看到logback是直接实现了slf4j的接口，而log4j不是对slf4j的原生实现，所以slf4j api在调用log4j时需要一个适配层。</p><p>官方文档对logback是这样说的:</p><p>Native implementation There are also SLF4J bindings external to the SLF4J project, e.g.logback which implements SLF4J natively. Logback’sch.qos.logback.classic.Logger class is a direct implementation of SLF4J’sorg.slf4j.Logger interface.Thus, using SLF4J in conjunction with logback involves strictly zero memory and computational overhead. </p><p>也就是说logback实现slf4j是不消耗内存和计算开销的。</p><p>最后总结一下：</p><ol><li>slf4j是java的一个日志门面，实现了日志框架一些通用的api，log4j和logback是具体的日志框架。</li><li>他们可以单独的使用，也可以绑定slf4j一起使用。<br>•    单独使用。分别调用框架自己的方法来输出日志信息。<br>•    绑定slf4j一起使用。调用slf4j的api来输入日志信息，具体使用与底层日志框架无关（需要底层框架的配置文件）<br>显然这里我们不推荐单独使用日志框架。假设项目中已经使用了log4j，而我们此时加载了一个类库，而这个类库依赖另一个日志框架。这个时候我们就需要维护两个日志框架，这是一个非常麻烦的事情。而使用了slf4j就不同了，由于应用调用的抽象层的api，与底层日志框架是无关的，因此可以任意更换日志框架。<br>解密Log4j、SLF4J、Common-logging的区别<br>前面有一篇日志中简单的介绍了 log4j，同时也介绍了它与commons-logging的关系，但是突然冒出来一个slf4j，并且slf4j有取代commons-logging的趋势，所以，我们可以推知slf4j与commons-logging的作用应该<br>相差不大的。 好，下面开始先讲讲slf4j。<br>1.slf4j<br>他只提供一个核心slf4j api(就是slf4j-api.jar包)，这个包只有日志的接口，并没有实现，所以如果要使用就得再给它提供一个实现了些接口的日志包，比 如：log4j,common logging,jdk log日志实现包等，但是这些日志实现又不能通过接口直接调用，实现上他们根本就和slf4j-api不一致，因此slf4j又增加了一层来转换各日志实 现包的使用，当然slf4j-simple除外。</li></ol><p>slf4j+log4j组合使用模式：</p><ol><li>slf4j-api-1.5.11.jar</li><li>slf4j-log4j12-1.5.11.jar</li><li>log4j-1.2.15.jar</li><li>log4j.properties(也可以是 log4j.xml)</li></ol><p>JCL+Log4J组合使用模式（即commons-logging+log4j）：</p><ol><li>commons-logging-1.1.jar</li><li>log4j-1.2.15.jar</li><li>log4j.properties</li></ol><p>2.不同的获取logger的方式<br>log4j：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">import org.apache.log4j.Logger;</span><br><span class="line">Logger logger= Logger.getLogger(xx.class);</span><br></pre></td></tr></table></figure></p><p>slf4j+log4j：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">import  org.slf4j.Logger;</span><br><span class="line">import  org.slf4j.LoggerFactory;</span><br><span class="line">Logger logger = LoggerFactory.getLogger(xx.class);</span><br></pre></td></tr></table></figure></p><p>jcl+log4j:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">import org.apache.commons.logging.Log; </span><br><span class="line">import org.apache.commons.logging.LogFactory;</span><br><span class="line">private static Log log = LogFactory.getLog(xx.class);</span><br></pre></td></tr></table></figure></p><p>注意：common-longing是默认支持log4j的，使用其他日志工具需要做下面的配置：common-logging.properties<br>        org.apache.commons.logging.Log=org.apache.commons.logging.impl.Log4JCategoryLog</p><p>3.总结</p><p>总的来说，slf4j与commons-logging只是一个日志门面，实际还是要依赖真正的日志库log4j，虽然slf4j和commons-loggins自带了日志库，但是毕竟log4j才是最强大的。<br><strong>因为以前没有博客，我都是将自己喜欢的内容粘贴到word文档中，这是从以前word导入过来的内容，原url找不到了，不是原创，感谢开源，感谢分享，侵删！</strong></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;时间是不会等待的，无论发生什么事，它都会一如既往的向前走。&lt;/p&gt;
-&lt;h1 id=&quot;如何配置SLF4J不同的日志实现&quot;&gt;&lt;a href=&quot;#如何配置SLF4J不同的日志实现&quot; class=&quot;headerlink&quot; title=&quot;如何配置SLF4J不同的日志实现&quot;&gt;&lt;/a&gt;如
-      
-    
-    </summary>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>2017年12月14日-学习日志</title>
-    <link href="http://yoursite.com/2017/12/14/2017%E5%B9%B412%E6%9C%8814%E6%97%A5-%E5%AD%A6%E4%B9%A0%E6%97%A5%E5%BF%97/"/>
-    <id>http://yoursite.com/2017/12/14/2017年12月14日-学习日志/</id>
-    <published>2017-12-14T13:11:05.000Z</published>
-    <updated>2018-11-21T13:17:36.336Z</updated>
-    
-    <content type="html"><![CDATA[<p>慢慢来不要急，你想要的都会有的</p><h1 id="Js自调"><a href="#Js自调" class="headerlink" title="Js自调"></a>Js自调</h1><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">!function ($) &#123; //code her&#125;(window.jQuery);高级的自调函数的一种写法</span><br><span class="line">(function ($) &#123; //code her&#125;)(window.jQuery) 普通自调函数的一种写法</span><br></pre></td></tr></table></figure><p>括号使得里面的匿名函数变成函数表达式<br>！的运算优先级低于括号朔所以可以达到相同的效果<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var Name=function(parameters)&#123;//这里是块级作用域&#125;;Name();//调用匿名函数</span><br></pre></td></tr></table></figure></p><p>函数表达式是在运行中以引用的方式赋值给一个变量的，如上面的函数创建的方式。而这里函数表达式和函数声明是不一样的，函数声明的通常形式如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">function Name(parameters)&#123; //code here&#125;</span><br></pre></td></tr></table></figure></p><p>函数声明会在程序刚开始运行的时候会被提升（所以可以在执行之后声明），但是并不执行，直到被调用的时候再执行。 </p><h1 id="Js-表达式"><a href="#Js-表达式" class="headerlink" title="Js()表达式"></a>Js()表达式</h1><p><img src="/images/17121401.png" alt="Image text"><br>总结：()运算，返回的是括号里面的最后一个参数</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;慢慢来不要急，你想要的都会有的&lt;/p&gt;
-&lt;h1 id=&quot;Js自调&quot;&gt;&lt;a href=&quot;#Js自调&quot; class=&quot;headerlink&quot; title=&quot;Js自调&quot;&gt;&lt;/a&gt;Js自调&lt;/h1&gt;&lt;figure class=&quot;highlight plain&quot;&gt;&lt;table&gt;&lt;tr
-      
-    
-    </summary>
-    
-    
-  </entry>
-  
-  <entry>
-    <title>马说</title>
-    <link href="http://yoursite.com/2017/11/25/%E9%A9%AC%E8%AF%B4/"/>
-    <id>http://yoursite.com/2017/11/25/马说/</id>
-    <published>2017-11-25T12:59:22.000Z</published>
-    <updated>2018-11-25T13:02:32.215Z</updated>
-    
-    <content type="html"><![CDATA[<p><center><font color="grey" size="16"><strong>马说</strong></font></center></p><p><center><font color="grey"><strong>【作者】韩愈 【朝代】唐</strong></font></center><br>世有伯乐，然后有千里马。千里马常有，而伯乐不常有。故虽有名马，祇辱于奴隶人之手，骈死于槽枥之间，不以千里称也。</p><p>马之千里者，一食或尽粟一石。食马者不知其能千里而食也。是马也，虽有千里之能，食不饱，力不足，才美不外见，且欲与常马等不可得，安求其能千里也？</p><p>策之不以其道，食之不能尽其材，鸣之而不能通其意，执策而临之，曰：“天下无马！”呜呼！其真无马邪？其真不知马也！</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;&lt;center&gt;&lt;font color=&quot;grey&quot; size=&quot;16&quot;&gt;&lt;strong&gt;马说&lt;/strong&gt;&lt;/font&gt;&lt;/center&gt;&lt;/p&gt;
-&lt;p&gt;&lt;center&gt;&lt;font color=&quot;grey&quot;&gt;&lt;strong&gt;【作者】韩愈 【朝代】唐&lt;/strong&gt;&lt;
-      
-    
-    </summary>
-    
-      <category term="思考" scheme="http://yoursite.com/categories/%E6%80%9D%E8%80%83/"/>
-    
-    
-      <category term="思考" scheme="http://yoursite.com/tags/%E6%80%9D%E8%80%83/"/>
     
   </entry>
   
