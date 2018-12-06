@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-12-05T12:46:19.845Z</updated>
+  <updated>2018-12-06T15:42:09.474Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,82 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>eclipse启动耗时统计插件</title>
+    <link href="http://yoursite.com/2018/12/06/eclipse%E5%90%AF%E5%8A%A8%E8%80%97%E6%97%B6%E7%BB%9F%E8%AE%A1%E6%8F%92%E4%BB%B6/"/>
+    <id>http://yoursite.com/2018/12/06/eclipse启动耗时统计插件/</id>
+    <published>2018-12-06T12:51:47.000Z</published>
+    <updated>2018-12-06T15:42:09.474Z</updated>
+    
+    <content type="html"><![CDATA[<p>前言：<br>《深入理解java虚拟机》，Eclipse运行实战调优中使用。</p><p><strong>1、首先我们要先创建一个插件工程。</strong><br>File-&gt;New-&gt;Project-&gt;Plug-in Development-&gt;Plug-in Project<br><img src="/images/eclipse插件创建1.png" alt="Image text"><br><strong>2.点击Next</strong><br><img src="/images/eclipse插件创建2.png" alt="Image text"><br><strong>3.再点击Next，选择Hello，World Command</strong><br><img src="/images/eclipse插件3.png" alt="Image text"><br><strong>4.点击finish，创建的目录结构为</strong><br><img src="/images/eclipse插件5初始目录结构.png" alt="Image text"><br><strong>5.在工程的目录下，建个名为ShowTime的类</strong><br><img src="/images/eclipse插件新建class.png" alt="Image text"><br>该类需要继承IStartup接口，并实现earlyStartup()方法，代码如下：<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> com.shsx.showtime;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.eclipse.jface.dialogs.MessageDialog;</span><br><span class="line"><span class="keyword">import</span> org.eclipse.swt.widgets.Display;</span><br><span class="line"><span class="keyword">import</span> org.eclipse.swt.widgets.Shell;</span><br><span class="line"><span class="keyword">import</span> org.eclipse.ui.IStartup;</span><br><span class="line"> <span class="comment">/**</span></span><br><span class="line"><span class="comment">  * </span></span><br><span class="line"><span class="comment">  * 统计Eclipse启动耗时时间</span></span><br><span class="line"><span class="comment">  * <span class="doctag">@author</span> Shsx</span></span><br><span class="line"><span class="comment">  *</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ShowTime</span> <span class="keyword">implements</span> <span class="title">IStartup</span></span>&#123;</span><br><span class="line"> </span><br><span class="line"><span class="meta">@Override</span></span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">earlyStartup</span><span class="params">()</span> </span>&#123;</span><br><span class="line"><span class="comment">// TODO Auto-generated method stub</span></span><br><span class="line">Display.getDefault().syncExec(<span class="keyword">new</span> Runnable() &#123;</span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span></span>&#123;</span><br><span class="line">            <span class="comment">//获取eclipse启动的时间</span></span><br><span class="line">                <span class="keyword">long</span> eclipseStartTime = Long.parseLong(System.getProperty(<span class="string">"eclipse.startTime"</span>));</span><br><span class="line">                <span class="comment">//获取系统当前的时间</span></span><br><span class="line">                <span class="keyword">long</span> costTime = System.currentTimeMillis() - eclipseStartTime;</span><br><span class="line">                Shell shell = Display.getDefault().getActiveShell();</span><br><span class="line">                String message = <span class="string">"Eclipse启动耗时  "</span> + costTime + <span class="string">"ms"</span>;</span><br><span class="line">                MessageDialog.openInformation(shell, <span class="string">"Information"</span>, message);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p><p><strong>6.打开plugin.xml文件，用下面的代码替换，注意class中的路径是你ShowTime类的路径。</strong><br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;</span><br><span class="line">&lt;?eclipse version=&quot;3.4&quot;?&gt;</span><br><span class="line">&lt;plugin&gt;</span><br><span class="line"></span><br><span class="line"> &lt;extension</span><br><span class="line"> </span><br><span class="line">         point=&quot;org.eclipse.ui.startup&quot;&gt;</span><br><span class="line"> </span><br><span class="line">         &lt;startup class=&quot;com.shsx.showtime.ShowTime&quot;/&gt;</span><br><span class="line"> </span><br><span class="line">   &lt;/extension&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;/plugin&gt;</span><br></pre></td></tr></table></figure></p><p><strong>7、测试插件，右击你的工程，点击Run As-&gt;Eclipse Applicaption</strong><br><img src="/images/eclipse插件启动成功.png" alt="Image text"><br><strong>8、导出插件</strong><br>右击你的工程，选择 Export-&gt;Plug-in Development-&gt;Deployable plug-ins and fragments,点击next  在Directory中填写你要导出的路径，点击finish。<br>导出之后是一个名为plugins的文件夹，将文件夹中的Jar包复制到eclipse/plugins目录下即可，再次启动eclipse就可以看到插件生效了。<br><strong>8、插件中文乱码</strong><br>bulid.properties文件后面加上javacDefaultEncoding.. = utf-8，完整文件如下<br><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">source.. = src/</span><br><span class="line">output.. = bin/</span><br><span class="line">bin.includes = plugin.xml,\</span><br><span class="line">               META-INF/,\</span><br><span class="line">               .,\</span><br><span class="line">               icons/</span><br><span class="line">javacDefaultEncoding.. = utf-<span class="number">8</span></span><br></pre></td></tr></table></figure></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;前言：&lt;br&gt;《深入理解java虚拟机》，Eclipse运行实战调优中使用。&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;1、首先我们要先创建一个插件工程。&lt;/strong&gt;&lt;br&gt;File-&amp;gt;New-&amp;gt;Project-&amp;gt;Plug-in Development-&amp;gt;
+      
+    
+    </summary>
+    
+      <category term="eclipse插件" scheme="http://yoursite.com/categories/eclipse%E6%8F%92%E4%BB%B6/"/>
+    
+    
+      <category term="eclipse插件" scheme="http://yoursite.com/tags/eclipse%E6%8F%92%E4%BB%B6/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>springboot入门一</title>
+    <link href="http://yoursite.com/2018/12/06/springboot%E5%85%A5%E9%97%A8%E4%B8%80/"/>
+    <id>http://yoursite.com/2018/12/06/springboot入门一/</id>
+    <published>2018-12-06T02:27:07.000Z</published>
+    <updated>2018-12-06T02:29:43.412Z</updated>
+    
+    <content type="html"><![CDATA[<p>进入<a href="https://start.spring.io/，选择maven工程，jdk" target="_blank" rel="noopener">https://start.spring.io/，选择maven工程，jdk</a> 8，点击Generate Project，生成demo工程</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;进入&lt;a href=&quot;https://start.spring.io/，选择maven工程，jdk&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;https://start.spring.io/，选择maven工程，jdk&lt;/a&gt; 8，点击Generate
+      
+    
+    </summary>
+    
+      <category term="springboot" scheme="http://yoursite.com/categories/springboot/"/>
+    
+    
+      <category term="springboot" scheme="http://yoursite.com/tags/springboot/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>2018-12-6-英文单词</title>
+    <link href="http://yoursite.com/2018/12/06/2018-12-6-%E8%8B%B1%E6%96%87%E5%8D%95%E8%AF%8D/"/>
+    <id>http://yoursite.com/2018/12/06/2018-12-6-英文单词/</id>
+    <published>2018-12-06T01:28:53.000Z</published>
+    <updated>2018-12-06T12:11:05.679Z</updated>
+    
+    <content type="html"><![CDATA[<p><strong>parallel</strong><br>英 [ˈpærəlel]   美 [ˈpærəˌlɛl]<br>adj.<br>平行的;相同的，类似的;[电]并联的;[计]并行的<br>adv.<br>平行地，并列地<br>n.<br>平行线（面）;相似物;类比;纬线<br>vt.<br>使平行;与…媲美;与…相比;与…相似<br><strong>scavenge</strong><br>英 [ˈskævɪndʒ]   美 [ˈskævəndʒ]<br>vt.&amp; vi.<br>清除污物，打扫;（在废物中）寻觅;（动物）食腐肉<br><strong>serial</strong><br>英 [ˈsɪəriəl]   美 [ˈsɪriəl]<br>adj.<br>连续的;连载的;顺序排列的;分期偿付的<br>n.<br>连载小说;电视连续剧;定期刊物;[军]行军梯队<br><strong>proxy</strong><br>英 [ˈprɒksi]   美 [ˈprɑ:ksi]<br>n.<br>代理服务器;代表权;代理人，代替物;委托书<br><strong>vendor</strong><br>英[ˈvendə(r)]<br>美[ˈvɛndɚ]<br>n.    卖主; 摊贩，小贩; [贸易] 自动售货机; &lt;正式&gt;供应商;<br>[例句]Remember, the estate agent is working for the vendor.<br>记住，房地产代理商是为房地产卖方服务的。<br>[其他]    复数：vendors</p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;p&gt;&lt;strong&gt;parallel&lt;/strong&gt;&lt;br&gt;英 [ˈpærəlel]   美 [ˈpærəˌlɛl]&lt;br&gt;adj.&lt;br&gt;平行的;相同的，类似的;[电]并联的;[计]并行的&lt;br&gt;adv.&lt;br&gt;平行地，并列地&lt;br&gt;n.&lt;br&gt;平行线（面）;相似物;类比;
+      
+    
+    </summary>
+    
+      <category term="英文" scheme="http://yoursite.com/categories/%E8%8B%B1%E6%96%87/"/>
+    
+    
+      <category term="英文" scheme="http://yoursite.com/tags/%E8%8B%B1%E6%96%87/"/>
+    
+  </entry>
   
   <entry>
     <title>内存分配和回收策略</title>
@@ -434,84 +510,6 @@
     
     
       <category term="hexo" scheme="http://yoursite.com/tags/hexo/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>关于ShSx.G的由来</title>
-    <link href="http://yoursite.com/2018/11/19/%E5%85%B3%E4%BA%8EShSx-G%E7%9A%84%E7%94%B1%E6%9D%A5/"/>
-    <id>http://yoursite.com/2018/11/19/关于ShSx-G的由来/</id>
-    <published>2018-11-19T15:06:58.000Z</published>
-    <updated>2018-11-21T05:14:01.531Z</updated>
-    
-    <content type="html"><![CDATA[<p>ShSx.G是我为我自己起的一个英文名字，鉴于我的英文知识比较匮乏，我也不知道这么拼写到底合不合法，反正都是<br>英文字母和英文标点符号，应该没有什么大问题。</p><h1 id="G的由来"><a href="#G的由来" class="headerlink" title="G的由来"></a>G的由来</h1><p>  我姓高，取高的拼音首字母G</p><h1 id="ShSx的由来"><a href="#ShSx的由来" class="headerlink" title="ShSx的由来"></a>ShSx的由来</h1><p>来源于四大名著的拼音首字母，《三国演义》（S），《红楼梦》（H），《水浒传》（S），《西游记》（X）。<br>忽略大小写，排名分先后，代表了四大名著在我心中的位置。</p><h2 id="三国演义"><a href="#三国演义" class="headerlink" title="三国演义"></a>三国演义</h2><hr><p>此桥段是皇叔一言不慎，差点被砍死的截图。论：<strong>少说话，多做事的重要性</strong></p><p><img src="/images/微信截图1.png" alt="Image text"><br><img src="/images/微信截图2.png" alt="Image text"><br><img src="/images/微信截图3.png" alt="Image text"><br><img src="/images/微信截图4.png" alt="Image text"><br><img src="/images/微信截图5.png" alt="Image text"><br><img src="/images/微信截图6.png" alt="Image text"><br><img src="/images/微信截图7.png" alt="Image text"><br><img src="/images/微信截图8.png" alt="Image text"><br><img src="/images/微信截图9.png" alt="Image text"></p><p><img src="/images/微信截图10.png" alt="Image text"><br><strong>皇叔：我X，我刚才说了什么？</strong></p><p><img src="/images/微信截图11.png" alt="Image text"><br><strong>刘表：这小子说谁呢？？</strong></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;ShSx.G是我为我自己起的一个英文名字，鉴于我的英文知识比较匮乏，我也不知道这么拼写到底合不合法，反正都是&lt;br&gt;英文字母和英文标点符号，应该没有什么大问题。&lt;/p&gt;
-&lt;h1 id=&quot;G的由来&quot;&gt;&lt;a href=&quot;#G的由来&quot; class=&quot;headerlink&quot; tit
-      
-    
-    </summary>
-    
-      <category term="about" scheme="http://yoursite.com/categories/about/"/>
-    
-    
-      <category term="ShSx.G" scheme="http://yoursite.com/tags/ShSx-G/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>About Me</title>
-    <link href="http://yoursite.com/2018/11/18/about/"/>
-    <id>http://yoursite.com/2018/11/18/about/</id>
-    <published>2018-11-18T04:28:05.000Z</published>
-    <updated>2018-12-02T08:34:22.656Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="个人简介"><a href="#个人简介" class="headerlink" title="个人简介"></a>个人简介</h1><hr><p>我是 <a href="/2018/11/19/关于ShSx-G的由来/" title="ShSx.G">ShSx.G</a> （主要是看大家都有），javaer，现在居住在北京，未来想去杭州发展。<br>鉴于我的英文名字不好拼，拼出来也不好听，所以还是不要叫我的英文名字了。<br>由于我擅长画瓢，可以叫我小瓢（^_^）！！！<br>如果用一个词形容自己的话，我觉得是：善良。</p><h1 id="教育背景"><a href="#教育背景" class="headerlink" title="教育背景"></a>教育背景</h1><hr><table><thead><tr><th>毕业院校</th><th>专业</th><th>时间</th><th>学历</th></tr></thead><tbody><tr><td>兰州理工大学</td><td>软件工程</td><td>2013-9至2017-6</td><td>本科</td></tr></tbody></table><h1 id="工作经历"><a href="#工作经历" class="headerlink" title="工作经历"></a>工作经历</h1><hr><table><thead><tr><th>工作单位</th><th>职位</th><th>时间</th></tr></thead><tbody><tr><td>用友</td><td>软件开发实习生</td><td>2016-12至2017-5</td></tr><tr><td>用友</td><td>软件开发工程师</td><td>2017-6至今</td></tr></tbody></table><h1 id="我做过什么"><a href="#我做过什么" class="headerlink" title="我做过什么"></a>我做过什么</h1><hr><ol><li>目前维护公司的ToB的审批流平台，与审批流相关的业务还算了解</li><li>工作中做过eclipse插件，以帮助公司的其他项目快速开发</li><li>使用java写了一个类似于有道词典的划屏取词的工具</li><li>使用Hexo+nignx+git搭建个人博客</li></ol><h1 id="我的希望"><a href="#我的希望" class="headerlink" title="我的希望"></a>我的希望</h1><hr><p>目前想在深圳或杭州找一份java开发的相关工作，如果有合适的岗位，可以给我发一份邮件，或者打电话聊聊，非常感谢(^_^)！<br>我的邮箱：<a href="mailto:1183782035@qq.com" target="_blank" rel="noopener">1183782035@qq.com</a><br>我的电话：13401002587</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h1 id=&quot;个人简介&quot;&gt;&lt;a href=&quot;#个人简介&quot; class=&quot;headerlink&quot; title=&quot;个人简介&quot;&gt;&lt;/a&gt;个人简介&lt;/h1&gt;&lt;hr&gt;
-&lt;p&gt;我是 &lt;a href=&quot;/2018/11/19/关于ShSx-G的由来/&quot; title=&quot;ShSx.G&quot;&gt;ShSx
-      
-    
-    </summary>
-    
-      <category term="about" scheme="http://yoursite.com/categories/about/"/>
-    
-    
-      <category term="about" scheme="http://yoursite.com/tags/about/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>linux之ln的用法</title>
-    <link href="http://yoursite.com/2018/11/12/linux%E4%B9%8Bln%E7%9A%84%E7%94%A8%E6%B3%95/"/>
-    <id>http://yoursite.com/2018/11/12/linux之ln的用法/</id>
-    <published>2018-11-12T13:07:00.000Z</published>
-    <updated>2018-11-20T16:07:28.197Z</updated>
-    
-    <content type="html"><![CDATA[<p>1、软链接就是：ln –s 源文件 目标文件，<br>只会在选定的位置上生成一个文件的镜像，不会占用磁盘空间，类似与windows的快捷方式。</p><p>2、硬链接ln源文件目标文件，没有参数-s，<br>会在选定的位置上生成一个和源文件大小相同的文件，无论是软链接还是硬链接，文件都保持同步变化。</p><p>例：</p><pre><code>①ln -s /usr/software/nodejs/bin/npm /usr/local/bin/ ②ln -s /usr/software/nodejs/bin/node /usr/local/bin/</code></pre>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;p&gt;1、软链接就是：ln –s 源文件 目标文件，&lt;br&gt;只会在选定的位置上生成一个文件的镜像，不会占用磁盘空间，类似与windows的快捷方式。&lt;/p&gt;
-&lt;p&gt;2、硬链接ln源文件目标文件，没有参数-s，&lt;br&gt;会在选定的位置上生成一个和源文件大小相同的文件，无论是软链接还是
-      
-    
-    </summary>
-    
-      <category term="linux" scheme="http://yoursite.com/categories/linux/"/>
-    
-    
-      <category term="linux" scheme="http://yoursite.com/tags/linux/"/>
     
   </entry>
   

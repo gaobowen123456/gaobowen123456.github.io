@@ -1,6 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title><![CDATA[eclipse启动耗时统计插件]]></title>
+    <url>%2F2018%2F12%2F06%2Feclipse%E5%90%AF%E5%8A%A8%E8%80%97%E6%97%B6%E7%BB%9F%E8%AE%A1%E6%8F%92%E4%BB%B6%2F</url>
+    <content type="text"><![CDATA[前言：《深入理解java虚拟机》，Eclipse运行实战调优中使用。 1、首先我们要先创建一个插件工程。File-&gt;New-&gt;Project-&gt;Plug-in Development-&gt;Plug-in Project2.点击Next3.再点击Next，选择Hello，World Command4.点击finish，创建的目录结构为5.在工程的目录下，建个名为ShowTime的类该类需要继承IStartup接口，并实现earlyStartup()方法，代码如下：12345678910111213141516171819202122232425262728293031package com.shsx.showtime;import org.eclipse.jface.dialogs.MessageDialog;import org.eclipse.swt.widgets.Display;import org.eclipse.swt.widgets.Shell;import org.eclipse.ui.IStartup; /** * * 统计Eclipse启动耗时时间 * @author Shsx * */public class ShowTime implements IStartup&#123; @Override public void earlyStartup() &#123; // TODO Auto-generated method stub Display.getDefault().syncExec(new Runnable() &#123; public void run()&#123; //获取eclipse启动的时间 long eclipseStartTime = Long.parseLong(System.getProperty("eclipse.startTime")); //获取系统当前的时间 long costTime = System.currentTimeMillis() - eclipseStartTime; Shell shell = Display.getDefault().getActiveShell(); String message = "Eclipse启动耗时 " + costTime + "ms"; MessageDialog.openInformation(shell, "Information", message); &#125; &#125;); &#125; &#125; 6.打开plugin.xml文件，用下面的代码替换，注意class中的路径是你ShowTime类的路径。1234567891011121314&lt;?xml version=&quot;1.0&quot; encoding=&quot;UTF-8&quot;?&gt;&lt;?eclipse version=&quot;3.4&quot;?&gt;&lt;plugin&gt; &lt;extension point=&quot;org.eclipse.ui.startup&quot;&gt; &lt;startup class=&quot;com.shsx.showtime.ShowTime&quot;/&gt; &lt;/extension&gt;&lt;/plugin&gt; 7、测试插件，右击你的工程，点击Run As-&gt;Eclipse Applicaption8、导出插件右击你的工程，选择 Export-&gt;Plug-in Development-&gt;Deployable plug-ins and fragments,点击next 在Directory中填写你要导出的路径，点击finish。导出之后是一个名为plugins的文件夹，将文件夹中的Jar包复制到eclipse/plugins目录下即可，再次启动eclipse就可以看到插件生效了。8、插件中文乱码bulid.properties文件后面加上javacDefaultEncoding.. = utf-8，完整文件如下1234567source.. = src/output.. = bin/bin.includes = plugin.xml,\ META-INF/,\ .,\ icons/javacDefaultEncoding.. = utf-8]]></content>
+      <categories>
+        <category>eclipse插件</category>
+      </categories>
+      <tags>
+        <tag>eclipse插件</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[springboot入门一]]></title>
+    <url>%2F2018%2F12%2F06%2Fspringboot%E5%85%A5%E9%97%A8%E4%B8%80%2F</url>
+    <content type="text"><![CDATA[进入https://start.spring.io/，选择maven工程，jdk 8，点击Generate Project，生成demo工程]]></content>
+      <categories>
+        <category>springboot</category>
+      </categories>
+      <tags>
+        <tag>springboot</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title><![CDATA[2018-12-6-英文单词]]></title>
+    <url>%2F2018%2F12%2F06%2F2018-12-6-%E8%8B%B1%E6%96%87%E5%8D%95%E8%AF%8D%2F</url>
+    <content type="text"><![CDATA[parallel英 [ˈpærəlel] 美 [ˈpærəˌlɛl]adj.平行的;相同的，类似的;[电]并联的;[计]并行的adv.平行地，并列地n.平行线（面）;相似物;类比;纬线vt.使平行;与…媲美;与…相比;与…相似scavenge英 [ˈskævɪndʒ] 美 [ˈskævəndʒ]vt.&amp; vi.清除污物，打扫;（在废物中）寻觅;（动物）食腐肉serial英 [ˈsɪəriəl] 美 [ˈsɪriəl]adj.连续的;连载的;顺序排列的;分期偿付的n.连载小说;电视连续剧;定期刊物;[军]行军梯队proxy英 [ˈprɒksi] 美 [ˈprɑ:ksi]n.代理服务器;代表权;代理人，代替物;委托书vendor英[ˈvendə(r)]美[ˈvɛndɚ]n. 卖主; 摊贩，小贩; [贸易] 自动售货机; &lt;正式&gt;供应商;[例句]Remember, the estate agent is working for the vendor.记住，房地产代理商是为房地产卖方服务的。[其他] 复数：vendors]]></content>
+      <categories>
+        <category>英文</category>
+      </categories>
+      <tags>
+        <tag>英文</tag>
+      </tags>
+  </entry>
+  <entry>
     <title><![CDATA[内存分配和回收策略]]></title>
     <url>%2F2018%2F12%2F05%2F%E5%86%85%E5%AD%98%E5%88%86%E9%85%8D%E5%92%8C%E5%9B%9E%E6%94%B6%E7%AD%96%E7%95%A5%2F</url>
     <content type="text"><![CDATA[前言：自动管理内存最终解决两个问题，给对象分配内存以及回收分配给对象的内存大方向来说：对象在堆上分配，主要分配在新生代的Eden区上，如果启动了本地线程分配缓冲，将按照线程优先在TLAB上分配。分配的规则不是百分之百固定。 对象优先在Eden分配大多数情况下，对象在新生代Eden分配，当Eden没有足够的空间进行分配时，虚拟机将发起一次MinorGC、新生代GC（Minor GC），老年代GC（Major GC / Full GC）,Full GC 会比MinorGC慢10倍。 大对象直接进入老年代参数 -XX:PretenureSizeThreshold 参数，令大于这个设置值的对象直接进入老年代。避免在Eden和两个Survivor之间大量的内存复制 长期存活的对象进入老年代虚拟机给每个对象定义一个对象年龄（Age）计数器。如果在Eden出生，并且经过第一次MinorGC 后仍然存活，并且在Survivor容纳的恶化，将被移到Survivor空间中，并且对象年龄设为1，对象在Survivor区每熬过一次Minor GC，年龄就增加1，当年龄到15时（默认），晋升到老年代。对象晋升老年代的年龄阈值参数为 -XX:MaxTenuringThreshold 来设置 动态的年龄判定虚拟机并不是永远要求对象的年龄必须达到15才能晋升老年代，如果Survivor空间相同年龄的对象大小总和大于Survivor的一半，年龄大于或等于该年龄的对象直接进入老年代 空间分配担保在发生Minor GC 之前，虚拟机会检查老年代最大可用的连续空间是否大于新生代所有对象的空间。如果条件成立，Minor GC是安全的。如果不成立，查看HandlepromotionFailure设置值是否允许担保失败如果允许，那么检查老年代最大可用的连续空间是否大于历次晋升到老年代的平均大小，如果大于，进行Minor GC，尽管是有风险的如果小于或者HandlepromotionFailure不允许，改为进行Full GC]]></content>
